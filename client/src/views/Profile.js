@@ -1,6 +1,6 @@
-import React from 'react'
-import { Box, Toolbar, Typography } from '@mui/material'
-import DrawerComponent from '../components/Drawer'
+import React from "react"
+import { Box, Toolbar, Typography } from "@mui/material"
+import DrawerComponent from "../components/Drawer"
 
 const Profile = () => {
   return (

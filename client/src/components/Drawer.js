@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { CssBaseline, AppBar, Divider, Toolbar, Typography, IconButton, Drawer, Box, List, ListItemButton, ListItem, ListItemIcon, ListItemText, Avatar } from "@mui/material"
+import { CssBaseline, AppBar, Divider, Toolbar, Typography, IconButton, Drawer, Box, List, ListItemButton, ListItem, ListItemIcon, ListItemText, Avatar, Button } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from '@mui/icons-material/Logout';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import GamesIcon from '@mui/icons-material/Games';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import LoginIcon from '@mui/icons-material/Login';
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,7 +15,7 @@ const DrawerComponent = ( props ) => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { window } = props;
-  const user = true
+  const user = false
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -25,15 +24,26 @@ const DrawerComponent = ( props ) => {
   // Drawer content
   const drawer = (
     <Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 5 }}>
-        <Avatar alt="Profile Image" sx={{ width: 72, height: 72 }} />
-        <Typography variant="h6" noWrap component="div" sx={{ marginTop: 2, marginBottom: 2 }}>
-          User
-        </Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 5 }}>
+        {user ? (
+          <>
+            <Avatar alt="Profile Image" sx={{ width: 72, height: 72 }} />
+            <Typography variant="h6" noWrap component="div" sx={{ mt: 2, mb: 2 }}>
+              User
+            </Typography>
+          </>
+        ) : (
+          <>
+            <Typography variant="h6" noWrap component="div" sx={{ mb: 2 }}>
+              Log in to view your profile
+            </Typography>
+            <Button sx={{ mb: 3 }} variant="contained" onClick={() => navigate("/auth")}>Login</Button>
+          </>
+        )}
       </Box>
       <Divider />
       <List>
-      <ListItem disablePadding>
+        <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/")}>
             <ListItemIcon>
               <HomeIcon />
@@ -73,7 +83,7 @@ const DrawerComponent = ( props ) => {
             <ListItemText primary="Settings" />
           </ListItemButton>
         </ListItem>
-        {user ? (
+        {user && (
           <ListItem disablePadding>
             <ListItemButton onClick={() => console.log("Logout")}>
               <ListItemIcon>
@@ -82,15 +92,6 @@ const DrawerComponent = ( props ) => {
               <ListItemText primary="Logout" />
             </ListItemButton>
           </ListItem>     
-        ) : (
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate("/auth")}>
-              <ListItemIcon>
-                <LoginIcon />
-              </ListItemIcon>
-              <ListItemText primary="Log in" />
-            </ListItemButton>
-          </ListItem>           
         )}
       </List>
     </Box>
@@ -115,15 +116,12 @@ const DrawerComponent = ( props ) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            Games
-          </Typography>
         </Toolbar>
       </AppBar>
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
+        aria-label="actions menu"
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
