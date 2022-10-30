@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { CssBaseline, AppBar, Divider, Toolbar, Typography, IconButton, Drawer, Box, List, ListItemButton, ListItem, ListItemIcon, ListItemText, Avatar, Button } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu";
-import LogoutIcon from '@mui/icons-material/Logout';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import GamesIcon from '@mui/icons-material/Games';
-import SettingsIcon from '@mui/icons-material/Settings';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import HomeIcon from '@mui/icons-material/Home';
-import { useNavigate } from 'react-router-dom';
+import LogoutIcon from "@mui/icons-material/Logout";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import GamesIcon from "@mui/icons-material/Games";
+import SettingsIcon from "@mui/icons-material/Settings";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import HomeIcon from "@mui/icons-material/Home";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -24,7 +24,7 @@ const DrawerComponent = ( props ) => {
   // Drawer content
   const drawer = (
     <Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 5 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 5 }}>
         {user ? (
           <>
             <Avatar alt="Profile Image" sx={{ width: 72, height: 72 }} />

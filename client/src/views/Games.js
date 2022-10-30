@@ -1,41 +1,18 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Box, Toolbar, Typography, Grid, Container, Grow, CircularProgress } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
-import GameComponent from "../components/Game" 
+import GameComponent from "../components/Game"
+import { useSelector, useDispatch } from "react-redux"
+import { initializeGames } from "../reducers/Games"
 
 const Games = () => {
-  const games = [
-    {
-      title: "God of war",
-      description: "This is general description of the game and also some extra information on top of that and maybe even some more content to fill up the space",
-      image: "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png",
-      id: "1"
-    },
-    {
-      title: "God of war 2",
-      description: "This is general description of the game",
-      image: "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png",
-      id: "2"
-    },
-    {
-      title: "God of war 3",
-      description: "This is general description of the game",
-      image: "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png",
-      id: "3"
-    },
-    {
-      title: "God of war 4",
-      description: "This is general description of the game",
-      image: "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png",
-      id: "4"
-    },
-    {
-      title: "God of war 5",
-      description: "This is general description of the game", 
-      image: "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png",
-      id: "5"
-    },
-  ]
+  const games = useSelector((state) => state.games)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializeGames())
+  }, [dispatch])
 
   return (
     <>
