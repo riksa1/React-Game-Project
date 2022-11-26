@@ -1,7 +1,10 @@
 import React from "react"
 import { Card, CardMedia, CardContent, CardActions, Button, Typography } from "@mui/material"
+import { useDispatch } from "react-redux"
+import { removeGame } from "../reducers/Games"
 
-const Game = ({ title, description, image }) => {
+const Game = ({ id, title, description, image }) => {
+  const dispatch = useDispatch()
   return (
     <>
       <Card>
@@ -23,7 +26,7 @@ const Game = ({ title, description, image }) => {
         <CardActions>
           <Button size="small">View</Button>
           <Button size="small">Edit</Button>
-          <Button size="small">Delete</Button>
+          <Button size="small" onClick={() => dispatch(removeGame(id))}>Delete</Button>
         </CardActions>
       </Card>
     </>

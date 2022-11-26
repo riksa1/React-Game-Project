@@ -22,13 +22,19 @@ const Games = () => {
         <Typography variant="h3" component="h3" sx={{ mb: 4 }}>
           Games
         </Typography>
+
         <Container>
           {games && games.length > 0 ? (
             <Grow in>
               <Grid container spacing={2}>
                 {games.map((game) => (
-                  <Grid item xs={12} sm={12} md={6} lg={4} key={game.id}>
-                    <GameComponent title={game.title} description={game.description} image={game.image} />
+                  <Grid item xs={12} sm={12} md={6} lg={4} key={game._id}>
+                    <GameComponent
+                      id={game._id} 
+                      title={game.title} 
+                      description={game.description} 
+                      image={game.image}
+                    />
                   </Grid>
                 ))}
               </Grid>

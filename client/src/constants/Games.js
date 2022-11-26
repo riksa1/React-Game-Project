@@ -1,2 +1,5 @@
 export const SET_GAMES = "SET_GAMES"
 export const ADD_GAME = "ADD_GAME"
+export const DELETE_GAME = "DELETE_GAME"
+export const SET_ERROR = "SET_ERROR"
+export const SET_MESSAGE = "SET_MESSAGE"

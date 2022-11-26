@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const gameSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    description: { type: String, required: true },
+    title: { type: String, required: true, minLength: 3, maxLength: 50 },
+    description: { type: String, required: true, minLength: 3, maxLength: 500 },
     creator: {
         type: String,
     },

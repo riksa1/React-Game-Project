@@ -21,4 +21,14 @@ gamesRouter.post("/", async (req, res) => {
     }
 });
 
+gamesRouter.delete("/:id", async (req, res) => {
+    try {
+        const game = await gameSchema.findById(req.params.id);
+        await game.delete();
+        res.status(200).json("Game deleted successfully!");
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 module.exports = gamesRouter;
