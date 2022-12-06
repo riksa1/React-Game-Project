@@ -8,14 +8,17 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../reducers/Auth";
 
 const drawerWidth = 240;
 
 const DrawerComponent = ( props ) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { window } = props;
-  const user = false
+  const { isAuth, user } = useSelector(state => state.auth)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -25,11 +28,11 @@ const DrawerComponent = ( props ) => {
   const drawer = (
     <Box>
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 5 }}>
-        {user ? (
+        {isAuth ? (
           <>
             <Avatar alt="Profile Image" sx={{ width: 72, height: 72 }} />
             <Typography variant="h6" noWrap component="div" sx={{ mt: 2, mb: 2 }}>
-              User
+              {user.name}  
             </Typography>
           </>
         ) : (
@@ -37,7 +40,7 @@ const DrawerComponent = ( props ) => {
             <Typography variant="h6" noWrap component="div" sx={{ mb: 2 }}>
               Log in to view your profile
             </Typography>
-            <Button sx={{ mb: 3 }} variant="contained" onClick={() => navigate("/auth")}>Login</Button>
+            <Button sx={{ mb: 3 }} variant="contained" onClick={() => navigate("/signin")}>Login</Button>
           </>
         )}
       </Box>
@@ -59,39 +62,44 @@ const DrawerComponent = ( props ) => {
             <ListItemText primary="Games" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate("/newgame")}>
-            <ListItemIcon>
-              <GamesIcon />
-            </ListItemIcon>
-            <ListItemText primary="New Game" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate("/profile")}>
-            <ListItemIcon>
-              <AccountBoxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Profile" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate("/settings")}>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-          </ListItemButton>
-        </ListItem>
-        {user && (
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => console.log("Logout")}>
-              <ListItemIcon>
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText primary="Logout" />
-            </ListItemButton>
-          </ListItem>     
+        {isAuth && (
+          <>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/newgame")}>
+                <ListItemIcon>
+                  <GamesIcon />
+                </ListItemIcon>
+                <ListItemText primary="New Game" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/profile")}>
+                <ListItemIcon>
+                  <AccountBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Profile" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/settings")}>
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => {
+                dispatch(logout());
+                navigate("/");
+              }}>
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItemButton>
+            </ListItem>
+          </>
         )}
       </List>
     </Box>

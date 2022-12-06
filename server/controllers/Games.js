@@ -1,6 +1,7 @@
 const express = require('express');
 const gamesRouter = express.Router();
 const gameSchema = require("../schemas/Game");
+const auth = require("../middleware/Auth");
 
 gamesRouter.get("/", async (req, res) => {
     try {
@@ -11,8 +12,8 @@ gamesRouter.get("/", async (req, res) => {
     }
 });
 
-gamesRouter.post("/", async (req, res) => {
-    const newGame = new gameSchema({ ...req.body, creator: "Riko" });
+gamesRouter.post("/", auth, async (req, res) => {
+    const newGame = new gameSchema({ ...req.body, creator: req.user._id });
     try {
         const savedGame = await newGame.save();
         res.status(200).json(savedGame);
@@ -21,11 +22,15 @@ gamesRouter.post("/", async (req, res) => {
     }
 });
 
-gamesRouter.delete("/:id", async (req, res) => {
+gamesRouter.delete("/:id", auth, async (req, res) => {
     try {
         const game = await gameSchema.findById(req.params.id);
-        await game.delete();
-        res.status(200).json("Game deleted successfully!");
+        if (game.creator.toString() === req.user._id.toString()) {
+            await game.delete();
+            res.status(200).json("Game deleted successfully!");
+        } else {
+            res.status(403).json("You can only delete your own games!");
+        }
     } catch (err) {
         res.status(500).json(err);
     }

@@ -1,10 +1,11 @@
 import React from "react"
 import { Card, CardMedia, CardContent, CardActions, Button, Typography } from "@mui/material"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { removeGame } from "../reducers/Games"
 
-const Game = ({ id, title, description, image }) => {
+const Game = ({ id, title, description, image, creator }) => {
   const dispatch = useDispatch()
+  const { user } = useSelector(state => state.auth)
   return (
     <>
       <Card>
@@ -25,8 +26,12 @@ const Game = ({ id, title, description, image }) => {
         </CardContent>
         <CardActions>
           <Button size="small">View</Button>
-          <Button size="small">Edit</Button>
-          <Button size="small" onClick={() => dispatch(removeGame(id))}>Delete</Button>
+          {user && user._id.toString() === creator.toString() && (
+            <>
+              <Button size="small">Edit</Button>
+              <Button size="small" onClick={() => dispatch(removeGame(id))}>Delete</Button>
+            </> 
+          )}
         </CardActions>
       </Card>
     </>

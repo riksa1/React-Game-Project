@@ -34,6 +34,7 @@ const Games = () => {
                       title={game.title} 
                       description={game.description} 
                       image={game.image}
+                      creator={game.creator}
                     />
                   </Grid>
                 ))}

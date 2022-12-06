@@ -1,19 +1,27 @@
 import React, { useEffect } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Home from "./views/Home.js"
-import Auth from "./views/Auth.js"
-import Profile from "./views/Profile.js"
-import Settings from "./views/Settings.js"
-import Games from "./views/Games.js"
-import Game from "./views/Game.js"
-import NewGame from "./views/NewGame.js"
+import Home from "./views/Home"
+import Profile from "./views/Profile"
+import Settings from "./views/Settings"
+import Games from "./views/Games"
+import Game from "./views/Game"
+import NewGame from "./views/NewGame"
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector, useDispatch } from "react-redux"
 import { setError, setMessage } from "./reducers/Messages"
+import SignIn from "./views/SignIn"
+import SignUp from "./views/SignUp"
 
 const App = () => {
+  const { isAuth } = useSelector(state => state.auth)
   const { error, message } = useSelector(state => state.messages)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if(localStorage.getItem("profile")) {
+      dispatch({ type: "SET_AUTH", payload: JSON.parse(localStorage.getItem("profile")) })
+    }
+  }, [dispatch])
 
   useEffect(() => {
     if (error) {
@@ -33,13 +41,22 @@ const App = () => {
     <BrowserRouter>
       <Toaster />
       <Routes>
-        <Route path="/" exact element={<Home />} />
-        <Route path="/auth" exact element={<Auth />} />
-        <Route path="/games" exact element={<Games />} />
-        <Route path="/game/:id" element={<Game />} />
-        <Route path="/newgame" exact element={<NewGame />} />
-        <Route path="/profile" exact element={<Profile />} />
-        <Route path="/settings" exact element={<Settings />} />
+        <Route path="*" element={isAuth ? <Home /> : <SignIn />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/games" element={<Games />} />
+        <Route path="/games/:id" element={<Game />} />
+        {isAuth ? (
+          <>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/newgame" element={<NewGame />} />
+          </>
+        ) : (
+          <>
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+          </>
+        )}
       </Routes>
     </BrowserRouter>
   );
