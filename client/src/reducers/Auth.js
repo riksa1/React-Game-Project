@@ -22,38 +22,55 @@ const reducer = (state = initialState, action) => {
         default:
             return state
     }
-}  
+}
+
+export const initializeAuth = () => {
+    return dispatch => {
+        const profile = JSON.parse(localStorage.getItem("profile"))
+        if (profile) {
+            dispatch({
+                type: SET_AUTH,
+                payload: profile
+            })
+        }
+    }
+}
 
 export const signIn = (user, navigate) => {
     return async dispatch => {
-        const { data } = await login(user)
-        if (data.token) {
-            dispatch({
-                type: SET_AUTH,
-                payload: data
-            })
-            localStorage.setItem("profile", JSON.stringify(data))
-            dispatch(setMessage("Logged in successfully!"))
-            navigate("/games")
-        } else {
+        try {
+            const { data } = await login(user)
+            if (data.token) {
+                dispatch({
+                    type: SET_AUTH,
+                    payload: data
+                })
+                localStorage.setItem("profile", JSON.stringify(data))
+                dispatch(setMessage("Logged in successfully!"))
+                navigate("/games")
+            }
+        } catch (error) {
             dispatch(setError("Invalid credentials"))
+            console.log(error)
         }
     }
 }
 
 export const signUp = (user, navigate) => {
     return async dispatch => {
-        const { data } = await register(user)
-        if (data.token) {
-            dispatch({
-                type: SET_AUTH,
-                payload: data
-            })
-            localStorage.setItem("profile", JSON.stringify(data))
-            dispatch(setMessage("Signed up successfully!"))
-            navigate("/games")
-        } else {
-            dispatch(setError(data.message))
+        try {
+            const { data } = await register(user)
+            if (data.token) {
+                dispatch({
+                    type: SET_AUTH,
+                    payload: data
+                })
+                localStorage.setItem("profile", JSON.stringify(data))
+                dispatch(setMessage("Signed up successfully!"))
+                navigate("/games")
+            }
+        } catch (error) {
+            dispatch(setError(error?.response?.data || "Something went wrong"))
         }
     }
 }

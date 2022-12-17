@@ -1,4 +1,4 @@
-import { SET_ERROR, SET_MESSAGE } from "../constants/Games"
+import { SET_ERROR, SET_MESSAGE } from "../constants/Messages"
 
 const initialState = { error: null, message: null }
 

@@ -5,12 +5,13 @@ import Profile from "./views/Profile"
 import Settings from "./views/Settings"
 import Games from "./views/Games"
 import Game from "./views/Game"
-import NewGame from "./views/NewGame"
+import GameForm from "./views/GameForm"
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector, useDispatch } from "react-redux"
 import { setError, setMessage } from "./reducers/Messages"
 import SignIn from "./views/SignIn"
 import SignUp from "./views/SignUp"
+import { initializeAuth } from "./reducers/Auth"
 
 const App = () => {
   const { isAuth } = useSelector(state => state.auth)
@@ -18,9 +19,7 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if(localStorage.getItem("profile")) {
-      dispatch({ type: "SET_AUTH", payload: JSON.parse(localStorage.getItem("profile")) })
-    }
+    dispatch(initializeAuth())
   }, [dispatch])
 
   useEffect(() => {
@@ -44,12 +43,13 @@ const App = () => {
         <Route path="*" element={isAuth ? <Home /> : <SignIn />} />
         <Route path="/" element={<Home />} />
         <Route path="/games" element={<Games />} />
-        <Route path="/games/:id" element={<Game />} />
+        <Route path="/games/game" element={<Game />} />
         {isAuth ? (
           <>
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/newgame" element={<NewGame />} />
+            <Route path="/newgame" element={<GameForm />} />
+            <Route path="/editgame" element={<GameForm />} />
           </>
         ) : (
           <>

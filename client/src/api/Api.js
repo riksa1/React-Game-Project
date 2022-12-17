@@ -15,4 +15,5 @@ export const login = (user) => API.post("/users/login", user);
 export const register = (user) => API.post("/users/register", user);
 export const fetchGames = () => API.get("/games");
 export const createGame = (newGame) => API.post("/games", newGame);
+export const updateGame = (id, updatedGame) => API.put(`/games/${id}`, updatedGame);
 export const deleteGame = (id) => API.delete(`/games/${id}`);

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { initializeGames } from "../reducers/Games"
 
 const Games = () => {
-  const games = useSelector((state) => state.games)
+  const { games } = useSelector((state) => state.games)
 
   const dispatch = useDispatch()
 
@@ -30,9 +30,10 @@ const Games = () => {
                 {games.map((game) => (
                   <Grid item xs={12} sm={12} md={6} lg={4} key={game._id}>
                     <GameComponent
-                      id={game._id} 
+                      _id={game._id} 
                       title={game.title} 
-                      description={game.description} 
+                      description={game.description}
+                      tags={game.tags}
                       image={game.image}
                       creator={game.creator}
                     />

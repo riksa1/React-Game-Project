@@ -3,14 +3,11 @@ const mongoose = require("mongoose");
 const gameSchema = new mongoose.Schema({
     title: { type: String, required: true, minLength: 3, maxLength: 50 },
     description: { type: String, required: true, minLength: 3, maxLength: 500 },
-    creator: {
-        type: String,
-    },
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     tags: [String],
-    image: String,
-    likeCount: {
-        type: Number,
-        default: 0
+    image: {
+        name: { type: String, required: true },
+        base64: { type: String, required: true },
     },
     createdAt: {
         type: Date,
