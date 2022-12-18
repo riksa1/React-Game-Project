@@ -3,12 +3,12 @@ import { Box, Toolbar, Typography, Button, TextField } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
 import FileBase from 'react-file-base64';
 import { Formik, Form } from "formik"
-import { addGame, editGame } from "../reducers/Games"
-import { useDispatch, useSelector } from "react-redux"
+import { createGameAsync, updateGameAsync } from "../reducers/Games"
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup"
 import { setError } from "../reducers/Messages";
 import { TagsInput } from "react-tag-input-component"
+import { useAppDispatch, useAppSelector } from "hooks";
 
 const NewGameSchema = Yup.object().shape({
   title: Yup.string()
@@ -23,8 +23,8 @@ const NewGameSchema = Yup.object().shape({
 
 const GameForm = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { selectedGame } = useSelector(state => state.games)
+  const dispatch = useAppDispatch()
+  const { selectedGame } = useAppSelector(state => state.games)
   const [tags, setTags] = useState(selectedGame ? selectedGame.tags : []);
   const [image, setImage] = useState(selectedGame ? selectedGame.image : null);
 
@@ -44,9 +44,9 @@ const GameForm = () => {
           validationSchema={NewGameSchema}
           onSubmit={({ title, description }) => {
             if (selectedGame)
-              dispatch(editGame(selectedGame._id, { title, description, tags, image }, navigate))
+              dispatch(updateGameAsync(selectedGame._id, { title, description, tags, image }, navigate))
             else
-              dispatch(addGame({ title, description, tags, image }, navigate))
+              dispatch(createGameAsync({ title, description, tags, image }, navigate))
 
           }}
         >
@@ -54,7 +54,6 @@ const GameForm = () => {
               <Form>
                 <TextField
                   id="title"
-                  name="title"
                   label="Title*"
                   variant="outlined"
                   sx={{ mb: 2, width: "100%" }}
@@ -64,7 +63,6 @@ const GameForm = () => {
                 />
                 <TextField
                   id="description"
-                  name="description"
                   label="Description*"
                   variant="outlined"
                   sx={{ mb: 2, width: "100%" }}

@@ -1,10 +1,10 @@
 import React from "react"
 import { Box, Card, CardContent, CardMedia, Toolbar, Typography } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
-import { useSelector } from "react-redux"
+import { useAppSelector } from "hooks"
 
 const Game = () => {
-  const { selectedGame } = useSelector(state => state.games)
+  const { selectedGame } = useAppSelector(state => state.games)
   return (
     <>
       <DrawerComponent />

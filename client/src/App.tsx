@@ -7,16 +7,16 @@ import Games from "./views/Games"
 import Game from "./views/Game"
 import GameForm from "./views/GameForm"
 import toast, { Toaster } from 'react-hot-toast';
-import { useSelector, useDispatch } from "react-redux"
 import { setError, setMessage } from "./reducers/Messages"
 import SignIn from "./views/SignIn"
 import SignUp from "./views/SignUp"
 import { initializeAuth } from "./reducers/Auth"
+import { useAppDispatch, useAppSelector } from "hooks"
 
 const App = () => {
-  const { isAuth } = useSelector(state => state.auth)
-  const { error, message } = useSelector(state => state.messages)
-  const dispatch = useDispatch()
+  const { isAuth } = useAppSelector(state => state.auth)
+  const { error, message } = useAppSelector(state => state.messages)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     dispatch(initializeAuth())

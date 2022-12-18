@@ -1,5 +1,0 @@
-export const SET_GAMES = "SET_GAMES"
-export const ADD_GAME = "ADD_GAME"
-export const EDIT_GAME = "EDIT_GAME"
-export const DELETE_GAME = "DELETE_GAME"
-export const SET_SELECTED_GAME = "SET_SELECTED_GAME"

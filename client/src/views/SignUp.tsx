@@ -1,45 +1,57 @@
-import React from 'react'
-import { Formik, Form } from 'formik'
-import { Typography, TextField, Button, Box, Container } from '@mui/material'
-import { useDispatch } from 'react-redux'
-import { useNavigate, Link } from 'react-router-dom'
-import { signIn } from '../reducers/Auth'
-import * as Yup from 'yup'
+import React from "react";
+import { Formik, Form } from "formik";
+import { Typography, TextField, Button, Box, Container } from "@mui/material";
+import { useNavigate, Link } from "react-router-dom";
+import { signUp } from "../reducers/Auth";
+import * as Yup from "yup";
+import { useAppDispatch } from "hooks";
 
-const SignIn = () => {
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-
-    const SignInSchema = Yup.object().shape({
+const SignUp = () => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    
+    const SignUpSchema = Yup.object().shape({
+        name: Yup.string(),
         email: Yup.string()
-            .email('Invalid email!')
-            .required('Email is required!'),
+            .email("Invalid email!")
+            .required("Email is required!"),
         password: Yup.string()
-            .min(8, 'Password is too short!')
-            .max(50, 'Password is too long!')
-            .required('Password is required!'),
+            .min(8, "Password is too short!")
+            .max(50, "Password is too long!")
+            .required("Password is required!"),
     });
 
     return (
         <Container component="main" maxWidth="xs">
-            <Box sx={{             
+            <Box sx={{
                 marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center', 
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
             }}>
                 <Typography variant="h3" component="h3" sx={{ mb: 4 }}>
-                    Sign In
+                    Sign Up
                 </Typography>
                 <Formik
-                    initialValues={{ email: "", password: "" }}
-                    validationSchema={SignInSchema}
-                    onSubmit={({ email, password }) => {
-                        dispatch(signIn({ email, password }, navigate))
+                    initialValues={{ email: "", password: "", name: "" }}
+                    validationSchema={SignUpSchema}
+                    onSubmit={({ email, password, name }) => {
+                        dispatch(signUp({ email, password, name }, navigate));
                     }}
                 >
-                    {formik => (
+                    {formik => (   
                         <Form>
+                            <TextField
+                                fullWidth
+                                id="name"
+                                name="name"
+                                label="Name"
+                                value={formik.values.name}
+                                onChange={formik.handleChange}
+                                error={formik.touched.name && Boolean(formik.errors.name)}
+                                helperText={formik.touched.name && formik.errors.name}
+                                sx={{ mb: 2 }}
+                            />
                             <TextField
                                 fullWidth
                                 id="email"
@@ -69,17 +81,17 @@ const SignIn = () => {
                                 variant="contained"
                                 sx={{ mt: 2, mb: 2, height: 55 }}
                             >
-                                Sign In
+                                Sign Up
                             </Button>
                         </Form>
                     )}
                 </Formik>
                 <Typography>
-                    Don't have an account? <Link to="/signup">Sign Up</Link>
+                    Already have an account? <Link to="/signin">Sign In</Link>
                 </Typography>
             </Box>
         </Container>
-    )
-}
+    );
+};
 
-export default SignIn
+export default SignUp;

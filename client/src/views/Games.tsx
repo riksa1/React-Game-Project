@@ -2,16 +2,15 @@ import React, { useEffect } from "react"
 import { Box, Toolbar, Typography, Grid, Container, Grow, CircularProgress } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
 import GameComponent from "../components/Game"
-import { useSelector, useDispatch } from "react-redux"
-import { initializeGames } from "../reducers/Games"
+import { fetchGamesAsync } from "../reducers/Games"
+import { useAppDispatch, useAppSelector } from "hooks"
 
 const Games = () => {
-  const { games } = useSelector((state) => state.games)
-
-  const dispatch = useDispatch()
+  const { games } = useAppSelector((state) => state.games)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(initializeGames())
+    dispatch(fetchGamesAsync())
   }, [dispatch])
 
   return (

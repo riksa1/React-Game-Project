@@ -8,17 +8,21 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../reducers/Auth";
+import { useAppDispatch, useAppSelector } from "hooks";
 
 const drawerWidth = 240;
 
-const DrawerComponent = ( props ) => {
+interface DrawerProps {
+  window?: () => Window;
+}
+
+const DrawerComponent = (props: DrawerProps) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { window } = props;
-  const { isAuth, user } = useSelector(state => state.auth)
+  const { isAuth, user } = useAppSelector(state => state.auth)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -32,7 +36,7 @@ const DrawerComponent = ( props ) => {
           <>
             <Avatar alt="Profile Image" sx={{ width: 72, height: 72 }} />
             <Typography variant="h6" noWrap component="div" sx={{ mt: 2, mb: 2 }}>
-              {user.name}  
+              {user?.name}  
             </Typography>
           </>
         ) : (

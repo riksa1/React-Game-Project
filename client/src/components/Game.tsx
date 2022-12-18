@@ -1,14 +1,26 @@
 import React from "react"
 import { Card, CardMedia, CardContent, CardActions, Button, Typography, Box } from "@mui/material"
-import { useDispatch, useSelector } from "react-redux"
-import { removeGame } from "../reducers/Games"
+import { deleteGameAsync } from "../reducers/Games"
 import { useNavigate } from "react-router-dom"
 import { setSelectedGame } from "../reducers/Games"
+import { useAppDispatch, useAppSelector } from "hooks"
 
-const Game = ({ _id, title, description, tags, image, creator }) => {
+interface GameProps {
+  _id: string
+  title: string
+  description: string
+  tags: string[]
+  image: {
+    name: string
+    base64: string
+  } | null
+  creator: string
+}
+
+const Game = ({ _id, title, description, tags, image, creator }: GameProps) => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { user } = useSelector(state => state.auth)
+  const dispatch = useAppDispatch()
+  const { user } = useAppSelector(state => state.auth)
   return (
     <>
       <Card>
@@ -67,7 +79,7 @@ const Game = ({ _id, title, description, tags, image, creator }) => {
                 dispatch(setSelectedGame({ _id, title, description, tags, image, creator }))
                 navigate("/editgame")
               }}>Edit</Button>
-              <Button size="small" onClick={() => dispatch(removeGame(_id))}>Delete</Button>
+              <Button size="small" onClick={() => dispatch(deleteGameAsync(_id))}>Delete</Button>
             </> 
           )}
         </CardActions>
