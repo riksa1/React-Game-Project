@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Home from "./views/Home"
 import Profile from "./views/Profile"
-import Settings from "./views/Settings"
 import Games from "./views/Games"
 import Game from "./views/Game"
 import GameForm from "./views/GameForm"
@@ -40,16 +39,15 @@ const App = () => {
     <BrowserRouter>
       <Toaster />
       <Routes>
-        <Route path="*" element={isAuth ? <Home /> : <SignIn />} />
+        <Route path="*" element={<Home />} />
         <Route path="/" element={<Home />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/game" element={<Game />} />
         {isAuth ? (
           <>
             <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
             <Route path="/newgame" element={<GameForm />} />
-            <Route path="/editgame" element={<GameForm />} />
+            <Route path="/editgame" element={<GameForm editing />} />
           </>
         ) : (
           <>

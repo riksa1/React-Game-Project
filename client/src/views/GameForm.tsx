@@ -21,12 +21,18 @@ const NewGameSchema = Yup.object().shape({
     .required("Description is required!"),
 })
 
-const GameForm = () => {
+const GameForm = ({ editing = false }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { selectedGame } = useAppSelector(state => state.games)
-  const [tags, setTags] = useState(selectedGame ? selectedGame.tags : []);
-  const [image, setImage] = useState(selectedGame ? selectedGame.image : null);
+  const { user } = useAppSelector(state => state.auth)
+  const [tags, setTags] = useState(editing && selectedGame ? selectedGame.tags : []);
+  const [image, setImage] = useState(editing && selectedGame ? selectedGame.image : null);
+ 
+  if(editing && selectedGame && selectedGame?.creator?._id !== user?._id) {
+    dispatch(setError("You are not authorized to edit this game!"))
+    navigate("/games")
+  }
 
   return (
     <>
@@ -34,16 +40,16 @@ const GameForm = () => {
       <Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: 'column', alignItems: 'center', mt: 5, width: { sm:  `calc(100% + ${240}px)` }  }}>
         <Toolbar />
         <Typography variant="h3" component="h3" sx={{ mb: 4 }}>
-          {selectedGame ? "Edit Game" : "Add Game"}
+          {editing && selectedGame ? "Edit Game" : "Add Game"}
         </Typography>
         <Formik
           initialValues={{ 
-            title: selectedGame ? selectedGame.title : "", 
-            description: selectedGame ? selectedGame.description : "",
+            title: editing && selectedGame ? selectedGame.title : "", 
+            description: editing && selectedGame ? selectedGame.description : "",
           }}
           validationSchema={NewGameSchema}
           onSubmit={({ title, description }) => {
-            if (selectedGame)
+            if (editing && selectedGame)
               dispatch(updateGameAsync(selectedGame._id, { title, description, tags, image }, navigate))
             else
               dispatch(createGameAsync({ title, description, tags, image }, navigate))
@@ -101,7 +107,7 @@ const GameForm = () => {
                     style={{ maxHeight: 300, maxWidth: 300, objectFit: "cover", marginBottom: 20 }} 
                   />}
                 </div>
-                <Button sx={{ width: "100%", height: 55 }} variant="contained" type="submit">{selectedGame ? "Edit" : "Create"}</Button>
+                <Button sx={{ width: "100%", height: 55 }} variant="contained" type="submit">{editing && selectedGame ? "Edit" : "Create"}</Button>
               </Form>
             )}
         </Formik>

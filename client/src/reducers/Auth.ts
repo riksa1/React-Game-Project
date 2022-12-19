@@ -41,12 +41,11 @@ export const initializeAuth = (): AppThunk => async dispatch => {
 export const signIn = (user: User, navigate: (path: string) => void): AppThunk => async dispatch => {
     try {
         const { data } = await login(user)
-        console.log(data)
         if (data.token) {
             dispatch(setAuth(data))
             localStorage.setItem("profile", JSON.stringify(data))
             dispatch(setMessage("Logged in successfully!"))
-            navigate("/games")
+            navigate("/")
         }
     } catch (error) {
         dispatch(setError("Invalid credentials"))
@@ -61,7 +60,7 @@ export const signUp = (user: NewUser, navigate: (path: string) => void): AppThun
             dispatch(setAuth(data))
             localStorage.setItem("profile", JSON.stringify(data))
             dispatch(setMessage("Signed up successfully!"))
-            navigate("/games")
+            navigate("/")
         }
     } catch (error) {
         dispatch(setError("Invalid credentials"))

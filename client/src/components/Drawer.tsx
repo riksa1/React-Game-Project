@@ -4,11 +4,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import GamesIcon from "@mui/icons-material/Games";
-import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../reducers/Auth";
+import { signOut } from "../reducers/Auth";
 import { useAppDispatch, useAppSelector } from "hooks";
 
 const drawerWidth = 240;
@@ -85,16 +84,8 @@ const DrawerComponent = (props: DrawerProps) => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/settings")}>
-                <ListItemIcon>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Settings" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
               <ListItemButton onClick={() => {
-                dispatch(logout());
+                dispatch(signOut(navigate));
                 navigate("/");
               }}>
                 <ListItemIcon>

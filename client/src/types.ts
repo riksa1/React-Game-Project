@@ -7,7 +7,9 @@ export interface NewGame {
 
 export interface Game extends NewGame {
     _id: string,
-    creator: string
+    creator: { _id: string, name: string }
+    createdAt: string,
+    updatedAt?: string
 }
 
 export interface User {

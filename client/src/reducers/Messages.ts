@@ -19,7 +19,6 @@ export const messageSlice = createSlice({
 
 export const { setError, setMessage } = messageSlice.actions
 
-// Other code such as selectors can use the imported `RootState` type
 export const messages = (state: RootState) => state.messages
 
 export default messageSlice.reducer

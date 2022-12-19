@@ -35,6 +35,8 @@ const Games = () => {
                       tags={game.tags}
                       image={game.image}
                       creator={game.creator}
+                      createdAt={game.createdAt}
+                      updatedAt={game.updatedAt}
                     />
                   </Grid>
                 ))}

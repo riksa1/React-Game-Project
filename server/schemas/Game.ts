@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const gameSchema = new mongoose.Schema({
     title: { type: String, required: true, minLength: 3, maxLength: 50 },
@@ -12,7 +12,10 @@ const gameSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: new Date()
-    }
+    },
+    updatedAt: {
+        type: Date,
+    },
 });
 
-module.exports = mongoose.model("Game", gameSchema);
+export default mongoose.model("Game", gameSchema);
