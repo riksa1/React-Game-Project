@@ -86,7 +86,10 @@ const GameForm = ({ editing = false }) => {
                     placeHolder="Enter tags"
                   />
                 </div>
-                <div style={{ width: "100%", marginBottom: 20, marginTop: 20 }}>
+                <Typography variant="h6" component="h6" sx={{ mt: 2, mb: 1 }}>
+                  Image
+                </Typography>
+                <div style={{ width: "100%", marginBottom: 20 }}>
                   <FileBase 
                     type="file" 
                     multiple={false} 
@@ -100,13 +103,19 @@ const GameForm = ({ editing = false }) => {
                     value={image}
                   />
                 </div>
-                <div>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
                   {image && image.base64 && <img 
                     src={image ? image.base64 : ""} 
                     alt="Selected" 
-                    style={{ maxHeight: 300, maxWidth: 300, objectFit: "cover", marginBottom: 20 }} 
+                    style={{ maxHeight: 400, maxWidth: 400, objectFit: "cover", marginBottom: 20 }} 
                   />}
-                </div>
+                </Box>
                 <Button sx={{ width: "100%", height: 55 }} variant="contained" type="submit">{editing && selectedGame ? "Edit" : "Create"}</Button>
               </Form>
             )}

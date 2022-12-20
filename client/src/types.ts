@@ -1,43 +1,56 @@
 export interface NewGame {
-    title: string,
-    description: string,
-    image: { base64: string, name: string } | null,
+    title: string
+    description: string
+    image: { base64: string, name: string } | null
     tags: string[]
 }
 
 export interface Game extends NewGame {
-    _id: string,
+    _id: string
     creator: { _id: string, name: string }
-    createdAt: string,
+    createdAt: string
     updatedAt?: string
 }
 
 export interface User {
-    email: string,
+    email: string
     password: string
 }
 
 export interface NewUser extends User {
-    name: string,
+    name: string
 }
 
 export interface Account extends NewUser {
     _id: string,
     createdAt: string
+    profilePicture?: { base64: string, name: string } | null
+}
+
+export interface EditProfile {
+    name: string
+    email: string
+    profilePicture?: { base64: string, name: string } | null
+}
+
+export interface Password {
+    oldPassword: string
+    password: string
+    confirmPassword: string
 }
 
 export interface GameState {
-    selectedGame: Game | null,
+    selectedGame: Game | null
     games: Game[]
 }
 
 export interface MessageState {
-    error: string | null,
+    error: string | null
     message: string | null
 }
 
 export interface AuthState {
-    token: string | null,
-    user: Account | null,
+    token: string | null
+    user: Account | null
     isAuth: boolean
 }

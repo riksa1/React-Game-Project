@@ -11,7 +11,8 @@ const SignUp = () => {
     const navigate = useNavigate();
     
     const SignUpSchema = Yup.object().shape({
-        name: Yup.string(),
+        name: Yup.string()
+            .required("Name is required!"),
         email: Yup.string()
             .email("Invalid email!")
             .required("Email is required!"),
@@ -45,7 +46,7 @@ const SignUp = () => {
                                 fullWidth
                                 id="name"
                                 name="name"
-                                label="Name"
+                                label="Name*"
                                 value={formik.values.name}
                                 onChange={formik.handleChange}
                                 error={formik.touched.name && Boolean(formik.errors.name)}
@@ -56,7 +57,7 @@ const SignUp = () => {
                                 fullWidth
                                 id="email"
                                 name="email"
-                                label="Email"
+                                label="Email*"
                                 value={formik.values.email}
                                 onChange={formik.handleChange}
                                 error={formik.touched.email && Boolean(formik.errors.email)}
@@ -67,7 +68,7 @@ const SignUp = () => {
                                 fullWidth
                                 id="password"
                                 name="password"
-                                label="Password"
+                                label="Password*"
                                 type="password"
                                 value={formik.values.password}
                                 onChange={formik.handleChange}

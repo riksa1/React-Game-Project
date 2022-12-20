@@ -11,7 +11,7 @@ const auth = async (req: AuthRequest, res: Response, next: NextFunction) => {
         }
         token = token.replace("Bearer ", "");
         const { id } = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
-        const user = await User.findOne({ _id: id });
+        const user = await User.findById(id);
         if (!user) {
             return res.status(401).send({ error: "Please authenticate." });
         }

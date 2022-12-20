@@ -5,6 +5,8 @@ import Profile from "./views/Profile"
 import Games from "./views/Games"
 import Game from "./views/Game"
 import GameForm from "./views/GameForm"
+import ProfileForm from "./views/ProfileForm"
+import ChangePasswordForm from "./views/ChangePasswordForm"
 import toast, { Toaster } from 'react-hot-toast';
 import { setError, setMessage } from "./reducers/Messages"
 import SignIn from "./views/SignIn"
@@ -48,6 +50,8 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/newgame" element={<GameForm />} />
             <Route path="/editgame" element={<GameForm editing />} />
+            <Route path="/editprofile" element={<ProfileForm />} />
+            <Route path="/changepassword" element={<ChangePasswordForm />} />
           </>
         ) : (
           <>

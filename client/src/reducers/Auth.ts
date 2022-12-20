@@ -1,8 +1,8 @@
 import { setError, setMessage } from "./Messages"
-import { login, register } from "../api/Api"
+import { deleteUser, login, register, resetPassword, updateUser } from "../api/Api"
 import { RootState, AppThunk } from "./store"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { AuthState, NewUser, User } from "types"
+import { Account, AuthState, NewUser, Password, User, EditProfile } from "types"
 
 const initialState: AuthState = {
     token: null,
@@ -23,11 +23,14 @@ export const authSlice = createSlice({
             state.token = null
             state.user = null
             state.isAuth = false
+        },
+        editUser: (state, action: PayloadAction<Account>) => {
+            state.user = action.payload
         }
     }
 })
 
-export const { setAuth, logout } = authSlice.actions
+export const { setAuth, logout, editUser } = authSlice.actions
 
 export const auth = (state: RootState) => state.auth
 
@@ -69,10 +72,48 @@ export const signUp = (user: NewUser, navigate: (path: string) => void): AppThun
 }
 
 export const signOut = (navigate: (path: string) => void): AppThunk => async dispatch => {
-    dispatch(logout())
     localStorage.removeItem("profile")
+    dispatch(logout())
     dispatch(setMessage("Logged out successfully!"))
     navigate("/")
+}
+
+export const updateUserAsync = (id: string, updatedUser: EditProfile, navigate: (path: string) => void): AppThunk => async dispatch => {
+    try {
+        const { data } = await updateUser(id, updatedUser)
+        dispatch(editUser(data))
+        const profile = JSON.parse(localStorage.getItem("profile") || "{}")
+        localStorage.setItem("profile", JSON.stringify({ ...profile, user: data }))
+        dispatch(setMessage("Account updated successfully!"))
+        navigate("/profile")
+    } catch (error) {
+        dispatch(setError("Failed to update account"))
+        console.log(error)
+    }
+}
+
+export const resetPasswordAsync = (id: string, password: Password, navigate: (path: string) => void): AppThunk => async dispatch => {
+    try {
+        await resetPassword(id, password)
+        dispatch(setMessage("Password reset successfully!"))
+        navigate("/profile")
+    } catch (error) {
+        dispatch(setError("Failed to reset password"))
+        console.log(error)
+    }
+}
+
+export const deleteUserAsync = (id: string | undefined, navigate: (path: string) => void): AppThunk => async dispatch => {
+    try {
+        await deleteUser(id)
+        localStorage.removeItem("profile")
+        dispatch(logout())
+        dispatch(setMessage("Account deleted successfully!"))
+        navigate("/")
+    } catch (error) {
+        dispatch(setError("Failed to delete account"))
+        console.log(error)
+    }
 }
 
 export default authSlice.reducer

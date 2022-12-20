@@ -33,8 +33,15 @@ const DrawerComponent = (props: DrawerProps) => {
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 5 }}>
         {isAuth ? (
           <>
-            <Avatar alt="Profile Image" sx={{ width: 72, height: 72 }} />
-            <Typography variant="h6" noWrap component="div" sx={{ mt: 2, mb: 2 }}>
+            <Avatar alt="Profile Image" sx={{ width: 72, height: 72 }} 
+              src={user?.profilePicture ? user?.profilePicture.base64 : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"}
+            />
+            <Typography variant="h6" sx={{ 
+                mt: 2, 
+                mb: 2,
+                textAlign: "center",
+              }}
+            >
               {user?.name}  
             </Typography>
           </>
