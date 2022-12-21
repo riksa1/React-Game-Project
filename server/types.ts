@@ -1,5 +1,5 @@
-import { Request } from 'express';
-import { Document, Types } from 'mongoose';
+import { Request } from "express"
+import { Document, Types } from "mongoose"
 
 export interface Game extends Document {
     _id?: Types.ObjectId
@@ -8,6 +8,11 @@ export interface Game extends Document {
     creator: Types.ObjectId
     createdAt: string
     updatedAt?: string
+    tags: string[]
+    image?: {
+        name: string
+        base64: string
+    }
 }
 
 export interface User extends Document {
@@ -16,6 +21,11 @@ export interface User extends Document {
     email: string
     password: string
     createdAt: string
+    games?: Types.ObjectId[]
+    profilePicture?: {
+        name: string
+        base64: string
+    }
 }
 
 export interface ExpressJsonOptions {
@@ -25,5 +35,5 @@ export interface ExpressJsonOptions {
 
 export interface AuthRequest extends Request {
     token?: string
-    user?: any
+    user?: User
 }

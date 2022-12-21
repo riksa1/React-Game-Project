@@ -42,6 +42,9 @@ export interface Password {
 export interface GameState {
     selectedGame: Game | null
     games: Game[]
+    total: number
+    limit: number
+    page: number
 }
 
 export interface MessageState {
@@ -53,4 +56,17 @@ export interface AuthState {
     token: string | null
     user: Account | null
     isAuth: boolean
+}
+
+export interface SearchGames {
+    search: string
+    page: number
+    limit: number
+}
+
+export interface GameSearchResult {
+    docs: Game[]
+    total: number
+    limit: number
+    page: number
 }
