@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { CssBaseline, AppBar, Divider, Toolbar, Typography, IconButton, Drawer, Box, List, ListItemButton, ListItem, ListItemIcon, ListItemText, Avatar, Button } from "@mui/material"
+import { CssBaseline, AppBar, Divider, Toolbar, Typography, IconButton, Drawer, Box, List, ListItemButton, ListItem, ListItemIcon, ListItemText, Avatar, Button, Switch } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import LogoutIcon from "@mui/icons-material/Logout"
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports"
@@ -7,7 +7,7 @@ import GamesIcon from "@mui/icons-material/Games"
 import AccountBoxIcon from "@mui/icons-material/AccountBox"
 import HomeIcon from "@mui/icons-material/Home"
 import { useNavigate } from "react-router-dom"
-import { signOut } from "../reducers/Auth"
+import { setTheme, signOut } from "../reducers/Auth"
 import { useAppDispatch, useAppSelector } from "hooks"
 
 const drawerWidth = 240
@@ -21,7 +21,7 @@ const DrawerComponent = (props: DrawerProps) => {
 	const dispatch = useAppDispatch()
 	const [mobileOpen, setMobileOpen] = useState(false)
 	const { window } = props
-	const { isAuth, user } = useAppSelector(state => state.auth)
+	const { isAuth, user, theme } = useAppSelector(state => state.auth)
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen)
@@ -126,6 +126,17 @@ const DrawerComponent = (props: DrawerProps) => {
 					>
 						<MenuIcon />
 					</IconButton>
+					<Typography variant="h6">
+						{theme === "light" ? "Light" : "Dark"} Mode
+					</Typography>
+					<Switch
+						checked={theme === "light" ? false : true}
+						onChange={() => {
+							localStorage.setItem("theme", theme === "light" ? "dark" : "light")
+							dispatch(setTheme(theme === "light" ? "dark" : "light"))
+						}}
+						color="default"
+					/>
 				</Toolbar>
 			</AppBar>
 			<Box

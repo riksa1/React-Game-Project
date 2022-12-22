@@ -13,6 +13,7 @@ export interface Game extends Document {
         name: string
         base64: string
     }
+    viewCount?: number
 }
 
 export interface User extends Document {

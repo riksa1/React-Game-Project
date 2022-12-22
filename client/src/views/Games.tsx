@@ -5,14 +5,15 @@ import GameComponent from "../components/Game"
 import { fetchGamesAsync } from "../reducers/Games"
 import { useAppDispatch, useAppSelector } from "hooks"
 import SearchBar from "../components/SearchBar"
+import GameSorter from "components/GameSorter"
 
 const Games = () => {
 	const [search, setSearch] = useState("")
-	const { games, page, total, limit } = useAppSelector((state) => state.games)
+	const { games, page, total, limit, sort } = useAppSelector((state) => state.games)
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		dispatch(fetchGamesAsync(search, page, limit))
+		dispatch(fetchGamesAsync(search, page, limit, sort))
 	}, [dispatch, page, search])
 
 	return (
@@ -24,6 +25,10 @@ const Games = () => {
 					Games
 				</Typography>
 				<SearchBar search={setSearch} />
+				<GameSorter
+					sort={sort}
+					setSortOption={(sortOption) => dispatch(fetchGamesAsync(search, page, limit, sortOption))}
+				/>
 				<Container>
 					{games && games.length > 0 ? (
 						<Grow in>
@@ -60,7 +65,7 @@ const Games = () => {
 						<Pagination
 							count={Math.ceil(total / limit)}
 							page={page}
-							onChange={(e, value) => dispatch(fetchGamesAsync(search, value, limit))}
+							onChange={(e, value) => dispatch(fetchGamesAsync(search, value, limit, sort))}
 							color="primary"
 							sx={{ mt: 2 }}
 						/>

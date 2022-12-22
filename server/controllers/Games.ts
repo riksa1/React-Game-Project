@@ -16,12 +16,15 @@ gamesRouter.get("/", async (_req, res: Response) => {
 })
 
 gamesRouter.post("/search/paginate", async (req, res: Response) => {
-	const { search, page, limit } = req.body
+	const { search, page, limit, sort } = req.body
 	try {
 		const skip = (page - 1) * limit
+		const sortField = sort.split(" ")[0]
+		const sortOrder = sort.split(" ")[1] === "1" ? 1 : -1
 		const options = {
 			skip: skip,
-			limit: parseInt(limit)
+			limit: parseInt(limit),
+			sort: { [sortField]: sortOrder }
 		}
 
 		const games = await gameSchema.find({
@@ -42,7 +45,8 @@ gamesRouter.post("/search/paginate", async (req, res: Response) => {
 			docs: games,
 			total: total,
 			limit: parseInt(limit),
-			page: parseInt(page)
+			page: parseInt(page),
+			sort: sort
 		})
 	} catch (err) {
 		res.status(500).json(err)

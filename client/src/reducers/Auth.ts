@@ -8,6 +8,7 @@ const initialState: AuthState = {
 	token: null,
 	user: null,
 	isAuth: false,
+	theme: "light"
 }
 
 export const authSlice = createSlice({
@@ -26,11 +27,14 @@ export const authSlice = createSlice({
 		},
 		editUser: (state, action: PayloadAction<Account>) => {
 			state.user = action.payload
+		},
+		setTheme: (state, action: PayloadAction<"light" | "dark">) => {
+			state.theme = action.payload
 		}
 	}
 })
 
-export const { setAuth, logout, editUser } = authSlice.actions
+export const { setAuth, logout, editUser, setTheme } = authSlice.actions
 
 export const auth = (state: RootState) => state.auth
 

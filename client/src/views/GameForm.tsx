@@ -57,7 +57,6 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 							dispatch(updateGameAsync(selectedGame._id, { title, description, tags, image }, navigate))
 						else
 							dispatch(createGameAsync({ title, description, tags, image }, navigate))
-
 					}}
 				>
 					{formik => (
@@ -91,7 +90,7 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 								/>
 							</div>
 							<Typography variant="h6" component="h6" sx={{ mt: 2, mb: 1 }}>
-                  Image
+								Image
 							</Typography>
 							<div style={{ width: "100%", marginBottom: 20 }}>
 								<FileBase

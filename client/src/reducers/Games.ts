@@ -1,10 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { Game, GameState, NewGame, GameSearchResult } from "types"
+import { Game, GameState, NewGame, GameSearchResult, SortOptions } from "types"
 import { createGame, updateGame, deleteGame, searchGames } from "../api/Api"
 import { setMessage } from "./Messages"
 import { RootState, AppThunk } from "./store"
 
-const initialState: GameState = { selectedGame: null, games: [], total: 0, limit: 9, page: 1 }
+const initialState: GameState = {
+	selectedGame: null,
+	games: [],
+	total: 0,
+	limit: 9,
+	page: 1,
+	sort: "createdAt 1"
+}
 
 export const gamesSlice = createSlice({
 	name: "games",
@@ -14,7 +21,8 @@ export const gamesSlice = createSlice({
 			state.games = action.payload.docs
 			state.total = action.payload.total
 			state.limit = action.payload.limit
-			state.page = action.payload.page
+			state.page = action.payload.page,
+			state.sort = action.payload.sort
 		},
 		addGame: (state, action: PayloadAction<Game>) => {
 			state.games = [...state.games, action.payload]
@@ -36,10 +44,9 @@ export const { setGames, addGame, editGame, removeGame, setSelectedGame } = game
 
 export const games = (state: RootState) => state.games
 
-export const fetchGamesAsync = (search: string, page: number, limit: number): AppThunk => async dispatch => {
+export const fetchGamesAsync = (search: string, page: number, limit: number, sort: SortOptions): AppThunk => async dispatch => {
 	try {
-		const { data } = await searchGames({ search, page, limit })
-		console.log(data)
+		const { data } = await searchGames({ search, page, limit, sort })
 		if(Math.ceil(data.total / data.limit) < data.page) {
 			dispatch(setGames({ ...data, page: 1 }))
 		} else {

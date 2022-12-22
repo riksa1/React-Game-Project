@@ -17,6 +17,10 @@ const gameSchema: Schema = new mongoose.Schema({
 	updatedAt: {
 		type: Date,
 	},
+	viewCount: {
+		type: Number,
+		default: 0
+	}
 })
 
 const GameModel: Model<Game> = mongoose.model<Game>("Game", gameSchema)
