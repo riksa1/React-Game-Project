@@ -1,10 +1,11 @@
 import React from "react"
 import { Formik, Form } from "formik"
-import { Typography, TextField, Button, Box, Container } from "@mui/material"
+import { Typography, TextField, Button, Box, CssBaseline } from "@mui/material"
 import { useNavigate, Link } from "react-router-dom"
 import { signUp } from "../reducers/Auth"
 import * as Yup from "yup"
 import { useAppDispatch } from "hooks"
+import NavBar from "components/NavBar"
 
 const SignUp = () => {
 	const dispatch = useAppDispatch()
@@ -23,12 +24,20 @@ const SignUp = () => {
 	})
 
 	return (
-		<Container component="main" maxWidth="xs">
-			<Box sx={{
-				marginTop: 8,
+		<Box sx={{
+			display: "flex",
+			flexDirection: "column",
+			alignItems: "center",
+			justifyContent: "center",
+			height: "100vh",
+		}}>
+			<CssBaseline />
+			<NavBar />
+			<Box component="main" sx={{
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center",
+				justifyContent: "center",
 			}}>
 				<Typography variant="h3" component="h3" sx={{ mb: 4 }}>
                     Sign Up
@@ -91,7 +100,7 @@ const SignUp = () => {
                     Already have an account? <Link to="/signin">Sign In</Link>
 				</Typography>
 			</Box>
-		</Container>
+		</Box>
 	)
 }
 

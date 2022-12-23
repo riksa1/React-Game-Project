@@ -17,7 +17,7 @@ const Profile = () => {
 			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm:  `calc(100% + ${240}px)` }  }}>
 				<Toolbar />
 				<Typography variant="h3" component="h3" sx={{ mb: 4 }}>
-          Profile
+					Profile
 				</Typography>
 				<Avatar alt="Profile image" sx={{ width: 200, height: 200, mb: 2 }}
 					src={user?.profilePicture ? user?.profilePicture.base64 : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"}
@@ -39,17 +39,17 @@ const Profile = () => {
 					<Button variant="contained" color="success" sx={{ mr: 2 }}
 						onClick={() => navigate("/editprofile")}
 					>
-            Edit Profile
+						Edit Profile
 					</Button>
 					<Button variant="contained" sx={{ mr: 2 }}
 						onClick={() => navigate("/changepassword")}
 					>
-            Change Password
+						Change Password
 					</Button>
 					<Button variant="contained" color="error"
 						onClick={() => setOpen(true)}
 					>
-            Delete Account
+						Delete Account
 					</Button>
 				</Box>
 			</Box>

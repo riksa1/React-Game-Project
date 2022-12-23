@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react"
 import { Box, Toolbar, Typography, Grid, Container, Grow, CircularProgress, Pagination } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
 import GameComponent from "../components/Game"
-import { fetchGamesAsync } from "../reducers/Games"
+import { searchGamesAsync } from "../reducers/Games"
 import { useAppDispatch, useAppSelector } from "hooks"
 import SearchBar from "../components/SearchBar"
 import GameSorter from "components/GameSorter"
 
 const Games = () => {
 	const [search, setSearch] = useState("")
-	const { games, page, total, limit, sort } = useAppSelector((state) => state.games)
+	const { games, page, total, limit, sort, loading } = useAppSelector((state) => state.games)
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		dispatch(fetchGamesAsync(search, page, limit, sort))
+		if(games.length === 0)
+			dispatch(searchGamesAsync(search, page, limit, sort))
 	}, [dispatch, page, search])
 
 	return (
@@ -27,10 +28,14 @@ const Games = () => {
 				<SearchBar search={setSearch} />
 				<GameSorter
 					sort={sort}
-					setSortOption={(sortOption) => dispatch(fetchGamesAsync(search, page, limit, sortOption))}
+					setSortOption={(sortOption) => dispatch(searchGamesAsync(search, page, limit, sortOption))}
 				/>
 				<Container>
-					{games && games.length > 0 ? (
+					{loading ? (
+						<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: 4 }}>
+							<CircularProgress />
+						</Box>
+					) : games && games.length > 0 ? (
 						<Grow in>
 							<Grid container spacing={2}>
 								{games.map((game) => (
@@ -44,16 +49,17 @@ const Games = () => {
 											creator={game.creator}
 											createdAt={game.createdAt}
 											updatedAt={game.updatedAt}
+											viewedBy={game.viewedBy}
 										/>
 									</Grid>
 								))}
 							</Grid>
 						</Grow>
-					) : games.length === 0 ? (
+					) : (
 						<Typography variant="h6" component="h6" sx={{ mb: 4, mt: 2, textAlign: "center" }}>
-              No games found...
+							No games found...
 						</Typography>
-					) : <CircularProgress />}
+					)}
 					<Box
 						sx={{
 							display: "flex",
@@ -65,7 +71,7 @@ const Games = () => {
 						<Pagination
 							count={Math.ceil(total / limit)}
 							page={page}
-							onChange={(e, value) => dispatch(fetchGamesAsync(search, value, limit, sort))}
+							onChange={(e, value) => dispatch(searchGamesAsync(search, value, limit, sort))}
 							color="primary"
 							sx={{ mt: 2 }}
 						/>

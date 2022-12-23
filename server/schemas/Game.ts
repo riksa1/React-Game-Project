@@ -17,10 +17,10 @@ const gameSchema: Schema = new mongoose.Schema({
 	updatedAt: {
 		type: Date,
 	},
-	viewCount: {
-		type: Number,
-		default: 0
-	}
+	viewedBy: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User"
+	}]
 })
 
 const GameModel: Model<Game> = mongoose.model<Game>("Game", gameSchema)

@@ -1,10 +1,20 @@
 import React from "react"
 import { Box, Card, CardContent, CardMedia, Toolbar, Typography } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
-import { useAppSelector } from "hooks"
+import { useAppSelector, useAppDispatch } from "hooks"
+import { setError } from "reducers/Messages"
+import { useNavigate } from "react-router-dom"
 
 const Game = () => {
+	const dispatch = useAppDispatch()
+	const navigate = useNavigate()
 	const { selectedGame } = useAppSelector(state => state.games)
+
+	if(!selectedGame) {
+		dispatch(setError("No game selected"))
+		navigate("/games")
+	}
+
 	return (
 		<>
 			<DrawerComponent />
@@ -12,12 +22,13 @@ const Game = () => {
 				<Toolbar />
 				<Card
 					sx={{
-						height: "100%",
-						width: "100%",
+						display: "flex",
+						flexGrow: 1,
 						mr: 2,
 						flexDirection: "column",
 						alignItems: "center",
 						justifyContent: "center",
+						p: 2,
 					}}
 				>
 					<CardMedia
@@ -25,18 +36,26 @@ const Game = () => {
 						image={selectedGame?.image && selectedGame?.image.base64 !== "" ? selectedGame?.image.base64 :
 							"https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
 						}
-						alt="random"
+						alt="Game image"
 					/>
 					<CardContent sx={{ flexGrow: 1 }}>
-						<Typography variant="h3" component="h3" sx={{ mb: 4, mt: 2 }}>
+						<Typography variant="h3" component="h3" sx={{ mb: 4, mt: 2, textAlign: "center" }}>
 							{selectedGame ? selectedGame.title : "Game"}
 						</Typography>
-						<Typography variant="h5" component="h5" sx={{ mb: 4 }}>
+						<Typography variant="h5" component="h5" sx={{ mb: 4, textAlign: "center" }}>
 							{selectedGame ? selectedGame.description : "Description"}
 						</Typography>
 						{selectedGame?.tags && selectedGame?.tags.length > 0 && (
-							<>
-								{selectedGame.tags.map((tag) => (
+							<Box
+								sx={{
+									display: "flex",
+									flexDirection: "row",
+									justifyContent: "center",
+									alignItems: "center",
+									flexWrap: "wrap",
+								}}
+							>
+								{selectedGame.tags.map((tag: string) => (
 									<Box
 										key={tag}
 										component="div"
@@ -58,7 +77,7 @@ const Game = () => {
 										{tag}
 									</Box>
 								))}
-							</>
+							</Box>
 						)}
 					</CardContent>
 				</Card>

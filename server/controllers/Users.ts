@@ -4,7 +4,7 @@ import gameSchema from "../schemas/Game"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import auth from "../middleware/Auth"
-import { AuthRequest } from "../types"
+import { AuthRequest, User } from "../types"
 
 const usersRouter = express.Router()
 
@@ -51,11 +51,12 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
 })
 
 usersRouter.put("/:id", auth, async (req: AuthRequest, res: Response) => {
+	const authUser = req.user as User
 	const { id } = req.params
 	const { name, email, profilePicture } = req.body
 	try {
 		const user = await userSchema.findById(id)
-		if (user && typeof req.user !== "undefined" && typeof req.user._id !== "undefined" && req?.user?._id.equals(user._id)) {
+		if (user && authUser._id.equals(user._id)) {
 			user.name = name
 			user.email = email
 			user.profilePicture = profilePicture ? profilePicture : user?.profilePicture
@@ -70,12 +71,13 @@ usersRouter.put("/:id", auth, async (req: AuthRequest, res: Response) => {
 	}
 })
 
-usersRouter.put("/reset-password/:id", auth, async (req: AuthRequest, res: Response) => {
+usersRouter.put("/:id/reset-password", auth, async (req: AuthRequest, res: Response) => {
+	const authUser = req.user as User
 	const { id } = req.params
 	const { oldPassword, password, confirmPassword } = req.body
 	try {
 		const user = await userSchema.findById(id)
-		if (user && typeof req.user !== "undefined" && typeof req.user._id !== "undefined" && req?.user?._id.equals(user._id)) {
+		if (user && authUser._id.equals(user._id)) {
 			if (password !== confirmPassword) {
 				res.status(400).send({ error: "Passwords do not match" })
 			} else {
@@ -98,9 +100,10 @@ usersRouter.put("/reset-password/:id", auth, async (req: AuthRequest, res: Respo
 })
 
 usersRouter.delete("/:id", auth, async (req: AuthRequest, res: Response) => {
+	const authUser = req.user as User
 	const { id } = req.params
 	try {
-		if(typeof req.user !== "undefined" && typeof req.user._id !== "undefined" && !req.user._id.equals(id))
+		if(authUser._id.equals(id))
 			return res.status(401).send({ error: "You can only delete your own account" })
 		await userSchema.findByIdAndDelete(id)
 		await gameSchema.deleteMany({ creator: id })

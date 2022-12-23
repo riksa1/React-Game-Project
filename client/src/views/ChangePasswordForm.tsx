@@ -34,7 +34,7 @@ const ChangePasswordForm = () => {
 			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm:  `calc(100% + ${240}px)` }  }}>
 				<Toolbar />
 				<Typography variant="h3" component="h3" sx={{ mb: 4 }}>
-            Change Password
+					Change Password
 				</Typography>
 				<Formik
 					initialValues={{

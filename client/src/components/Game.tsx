@@ -1,13 +1,12 @@
 import React from "react"
 import { Card, CardMedia, CardContent, CardActions, Button, Typography, Box } from "@mui/material"
-import { deleteGameAsync } from "../reducers/Games"
+import { deleteGameAsync, setSelectedGame, setGameViewedAsync } from "../reducers/Games"
 import { useNavigate } from "react-router-dom"
-import { setSelectedGame } from "../reducers/Games"
 import { useAppDispatch, useAppSelector } from "hooks"
 import { format } from "date-fns"
 import { Game } from "types"
 
-const GameComponent = ({ _id, title, description = "", tags, image, creator, createdAt, updatedAt }: Game) => {
+const GameComponent = ({ _id, title, description = "", tags, image, creator, createdAt, updatedAt, viewedBy }: Game) => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const { user } = useAppSelector(state => state.auth)
@@ -81,11 +80,11 @@ const GameComponent = ({ _id, title, description = "", tags, image, creator, cre
 						{creator?.name} {user && user._id.toString() === creator?._id.toString() && "(You)"}
 					</Typography>
 					<Typography variant="body2" color="text.secondary">
-            Created: {format(new Date(createdAt), "dd/MM/yyyy")}
+						Created: {format(new Date(createdAt), "dd/MM/yyyy")}
 					</Typography>
 					{updatedAt && (
 						<Typography variant="body2" color="text.secondary">
-              Updated: {format(new Date(updatedAt), "dd/MM/yyyy")}
+							Updated: {format(new Date(updatedAt), "dd/MM/yyyy")}
 						</Typography>
 					)}
 				</CardContent>
@@ -98,15 +97,35 @@ const GameComponent = ({ _id, title, description = "", tags, image, creator, cre
 					}}
 				>
 					<Button size="small" color="success" onClick={() => {
-						dispatch(setSelectedGame({ _id, title, description, tags, image, creator, createdAt, updatedAt }))
+						dispatch(setGameViewedAsync(_id))
+						dispatch(setSelectedGame({
+							_id,
+							title,
+							description,
+							tags, image,
+							creator,
+							createdAt,
+							updatedAt,
+							viewedBy
+						}))
 						navigate("/games/game")
 					}}>
-            View
+						View
 					</Button>
 					{user && user?._id.toString() === creator?._id.toString() && (
 						<>
 							<Button size="small" onClick={() => {
-								dispatch(setSelectedGame({ _id, title, description, tags, image, creator, createdAt, updatedAt }))
+								dispatch(setSelectedGame({
+									_id,
+									title,
+									description,
+									tags,
+									image,
+									creator,
+									createdAt,
+									updatedAt,
+									viewedBy
+								}))
 								navigate("/editgame")
 							}}>Edit</Button>
 							<Button size="small" color="error" onClick={() => dispatch(deleteGameAsync(_id))}>Delete</Button>

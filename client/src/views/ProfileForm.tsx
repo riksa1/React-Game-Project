@@ -30,7 +30,7 @@ const ProfileForm = () => {
 			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm:  `calc(100% + ${240}px)` }  }}>
 				<Toolbar />
 				<Typography variant="h3" component="h3" sx={{ mb: 4 }}>
-            Edit Profile
+					Edit Profile
 				</Typography>
 				<Formik
 					initialValues={{
@@ -63,7 +63,7 @@ const ProfileForm = () => {
 								{...formik.getFieldProps("email")}
 							/>
 							<Typography variant="h6" component="h6" sx={{ mb: 1 }}>
-                    Profile Picture
+								Profile Picture
 							</Typography>
 							<div style={{ width: "100%", marginBottom: 20 }}>
 								<FileBase
