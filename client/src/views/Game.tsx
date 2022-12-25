@@ -1,17 +1,16 @@
 import React from "react"
 import { Box, Card, CardContent, CardMedia, Toolbar, Typography } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
-import { useAppSelector, useAppDispatch } from "hooks"
-import { setError } from "reducers/Messages"
+import { useAppSelector } from "hooks"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-hot-toast"
 
 const Game = () => {
-	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 	const { selectedGame } = useAppSelector(state => state.games)
 
 	if(!selectedGame) {
-		dispatch(setError("No game selected"))
+		toast.error("Game not found!")
 		navigate("/games")
 	}
 

@@ -1,6 +1,6 @@
 import React from "react"
 import { Box, Button, Typography, TextField, Toolbar } from "@mui/material"
-import { useAppSelector, useAppDispatch } from "hooks"
+import { useAppSelector } from "hooks"
 import { useNavigate } from "react-router-dom"
 import { Formik, Form } from "formik"
 import { resetPasswordAsync } from "reducers/Auth"
@@ -25,7 +25,6 @@ const ProfileSchema = Yup.object().shape({
 
 const ChangePasswordForm = () => {
 	const navigate = useNavigate()
-	const dispatch = useAppDispatch()
 	const { user } = useAppSelector(state => state.auth)
 
 	return (
@@ -44,7 +43,7 @@ const ChangePasswordForm = () => {
 					}}
 					validationSchema={ProfileSchema}
 					onSubmit={({ oldPassword, newPassword, confirmPassword }) => {
-						dispatch(resetPasswordAsync(user ? user._id : "", { oldPassword, password: newPassword, confirmPassword }, navigate))
+						resetPasswordAsync(user ? user._id : "", { oldPassword, password: newPassword, confirmPassword }, navigate)
 					}}
 				>
 					{formik => (

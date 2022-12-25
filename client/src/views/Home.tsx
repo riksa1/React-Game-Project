@@ -9,7 +9,7 @@ import GameComponent from "components/Game"
 const Home = () => {
 	const dispatch = useAppDispatch()
 	const { user, isAuth } = useAppSelector(state => state.auth)
-	const { ownLatestGames, loading, games } = useAppSelector(state => state.games)
+	const { ownLatestGames, loading, latestGames } = useAppSelector(state => state.games)
 
 	useEffect(() => {
 		dispatch(fetchLatestGamesAsync())
@@ -23,15 +23,15 @@ const Home = () => {
 				<Typography variant="h4" component="h1" gutterBottom>
 					Welcome to the Game Library
 				</Typography>
-				{isAuth && user && (
-					<Container>
-						{loading ? (
-							<CircularProgress />
-						) : ownLatestGames.length > 0 ? (
-							<>
-								<Typography variant="h5" component="h2" gutterBottom sx={{ textAlign: "center" }}>
-									Your latest games
-								</Typography>
+				<Container>
+					{isAuth && user && (
+						<>
+							<Typography variant="h5" component="h2" gutterBottom sx={{ textAlign: "center" }}>
+								Your latest games
+							</Typography>
+							{loading ? (
+								<CircularProgress />
+							) : ownLatestGames.length ? (
 								<Grow in>
 									<Grid container spacing={2}>
 										{ownLatestGames.map(game => (
@@ -51,46 +51,44 @@ const Home = () => {
 										))}
 									</Grid>
 								</Grow>
-							</>
-						) : (
-							<Typography variant="h5" component="h2" gutterBottom>
-								You have no games yet created
-							</Typography>
-						)}
-						{loading ? (
-							<CircularProgress />
-						) : games.length > 0 ? (
-							<>
-								<Typography variant="h5" component="h2" gutterBottom sx={{ textAlign: "center" }}>
-									Latest games
+							) : (
+								<Typography variant="h6" color="lightgray" component="h3" gutterBottom sx={{ textAlign: "center" }}>
+									You have no games yet...
 								</Typography>
-								<Grow in>
-									<Grid container spacing={2}>
-										{games.map(game => (
-											<Grid item xs={12} sm={12} md={6} lg={4} key={game._id}>
-												<GameComponent
-													_id={game._id}
-													title={game.title}
-													tags={game.tags}
-													description={game.description}
-													image={game.image}
-													creator={game.creator}
-													createdAt={game.createdAt}
-													updatedAt={game.updatedAt}
-													viewedBy={game.viewedBy}
-												/>
-											</Grid>
-										))}
+							)}
+						</>
+					)}
+					<Typography variant="h5" component="h2" gutterBottom sx={{ textAlign: "center" }}>
+						Latest games
+					</Typography>
+					{loading ? (
+						<CircularProgress />
+					) : latestGames.length > 0 ? (
+						<Grow in>
+							<Grid container spacing={2}>
+								{latestGames.map(game => (
+									<Grid item xs={12} sm={12} md={6} lg={4} key={game._id}>
+										<GameComponent
+											_id={game._id}
+											title={game.title}
+											tags={game.tags}
+											description={game.description}
+											image={game.image}
+											creator={game.creator}
+											createdAt={game.createdAt}
+											updatedAt={game.updatedAt}
+											viewedBy={game.viewedBy}
+										/>
 									</Grid>
-								</Grow>
-							</>
-						) : (
-							<Typography variant="h5" component="h2" gutterBottom>
-								No games yet created
-							</Typography>
-						)}
-					</Container>
-				)}
+								))}
+							</Grid>
+						</Grow>
+					) : (
+						<Typography variant="h6" color="lightgray" component="h3" gutterBottom sx={{ textAlign: "center" }}>
+							No games found...
+						</Typography>
+					)}
+				</Container>
 			</Box>
 		</>
 	)

@@ -29,12 +29,15 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
 })
 
 usersRouter.post("/register", async (req: Request, res: Response) => {
-	const { name, email, password } = req.body
+	const { name, email, password, confirmPassword } = req.body
 	try {
 		const user = await userSchema.findOne({ email: email })
 		if (user) {
 			res.status(409).send({ error: "User with that email already exists" })
 		} else {
+			if (password !== confirmPassword) {
+				res.status(400).send({ error: "Passwords do not match" })
+			}
 			const hashedPassword = await bcrypt.hash(password, 10)
 			const newUser = new userSchema({
 				name: name,

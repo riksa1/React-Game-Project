@@ -1,14 +1,14 @@
 import React, { useState } from "react"
 import { Box, Toolbar, Typography, Button, TextField } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
-import FileBase from "react-file-base64"
 import { Formik, Form } from "formik"
 import { createGameAsync, updateGameAsync } from "../reducers/Games"
 import { useNavigate } from "react-router-dom"
 import * as Yup from "yup"
-import { setError } from "../reducers/Messages"
 import { TagsInput } from "react-tag-input-component"
 import { useAppDispatch, useAppSelector } from "hooks"
+import ImageInput from "components/ImageInput"
+import toast from "react-hot-toast"
 
 interface GameFormProps {
 	editing?: boolean
@@ -21,7 +21,7 @@ const NewGameSchema = Yup.object().shape({
 		.required("Title is required!"),
 	description: Yup.string()
 		.min(3, "Description is too short!")
-		.max(500, "Description is too long!")
+		.max(1000, "Description is too long!")
 		.required("Description is required!"),
 })
 
@@ -34,7 +34,7 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 	const [image, setImage] = useState(editing && selectedGame ? selectedGame.image : null)
 
 	if(editing && selectedGame && selectedGame?.creator?._id !== user?._id) {
-		dispatch(setError("You are not authorized to edit this game!"))
+		toast.error("You are not the creator of this game!")
 		navigate("/games")
 	}
 
@@ -56,7 +56,7 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 						if (editing && selectedGame)
 							dispatch(updateGameAsync(selectedGame._id, { title, description, tags, image }, navigate))
 						else
-							dispatch(createGameAsync({ title, description, tags, image }, navigate))
+							createGameAsync({ title, description, tags, image }, navigate)
 					}}
 				>
 					{formik => (
@@ -89,23 +89,10 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 									placeHolder="Enter tags"
 								/>
 							</div>
-							<Typography variant="h6" component="h6" sx={{ mt: 2, mb: 1 }}>
-								Image
+							<Typography variant="h6" component="h6" sx={{ mt: 2, mb: 1, textAlign: "center" }}>
+								Game Image
 							</Typography>
-							<div style={{ width: "100%", marginBottom: 20 }}>
-								<FileBase
-									type="file"
-									multiple={false}
-									onDone={({ type, size, base64, name }) => {
-										if(type.split("/")[0] !== "image" || (Number(size.split(" ")[0]) > 10000)) {
-											dispatch(setError("File size should be less than 10MB and should be an image!"))
-											return
-										}
-										setImage({ base64, name })
-									}}
-									value={image}
-								/>
-							</div>
+							<ImageInput setImage={setImage} />
 							<Box
 								sx={{
 									display: "flex",

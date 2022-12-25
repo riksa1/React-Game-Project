@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Toolbar, Typography, Grid, Container, Grow, CircularProgress, Pagination } from "@mui/material"
+import { Box, Toolbar, Typography, Grid, Container, Grow, CircularProgress, Pagination, Checkbox } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
 import GameComponent from "../components/Game"
 import { searchGamesAsync } from "../reducers/Games"
@@ -9,12 +9,13 @@ import GameSorter from "components/GameSorter"
 
 const Games = () => {
 	const [search, setSearch] = useState("")
+	const [own, setOwn] = useState(false)
+	const { isAuth, user } = useAppSelector((state) => state.auth)
 	const { games, page, total, limit, sort, loading } = useAppSelector((state) => state.games)
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		if(games.length === 0)
-			dispatch(searchGamesAsync(search, page, limit, sort))
+		dispatch(searchGamesAsync(search, page, limit, sort, own))
 	}, [dispatch, page, search])
 
 	return (
@@ -28,8 +29,36 @@ const Games = () => {
 				<SearchBar search={setSearch} />
 				<GameSorter
 					sort={sort}
-					setSortOption={(sortOption) => dispatch(searchGamesAsync(search, page, limit, sortOption))}
+					setSortOption={(sortOption) => dispatch(searchGamesAsync(search, page, limit, sortOption, own))}
 				/>
+				{isAuth && user && (
+					<>
+						<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+							<Checkbox
+								checked={!own}
+								onChange={() => {
+									dispatch(searchGamesAsync(search, page, limit, sort, !own))
+									setOwn(!own)
+								}}
+								inputProps={{ "aria-label": "controlled" }}
+							/>
+							<Typography variant="h6" component="h6" sx={{ mb: 2, mt: 2, textAlign: "center" }}>
+								Show all games
+							</Typography>
+							<Checkbox
+								checked={own}
+								onChange={() => {
+									dispatch(searchGamesAsync(search, page, limit, sort, !own))
+									setOwn(!own)
+								}}
+								inputProps={{ "aria-label": "controlled" }}
+							/>
+							<Typography variant="h6" component="h6" sx={{ mb: 2, mt: 2, textAlign: "center" }}>
+								Show only my games
+							</Typography>
+						</Box>
+					</>
+				)}
 				<Container>
 					{loading ? (
 						<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: 4 }}>
@@ -71,7 +100,7 @@ const Games = () => {
 						<Pagination
 							count={Math.ceil(total / limit)}
 							page={page}
-							onChange={(e, value) => dispatch(searchGamesAsync(search, value, limit, sort))}
+							onChange={(_e, value) => dispatch(searchGamesAsync(search, value, limit, sort, own))}
 							color="primary"
 							sx={{ mt: 2 }}
 						/>

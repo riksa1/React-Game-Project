@@ -8,8 +8,8 @@ interface GameFilterProps {
 }
 
 const options = [
-	{ label: "Latest", value: "createdAt 1" },
-	{ label: "Oldest", value: "createdAt -1" },
+	{ label: "Latest", value: "createdAt -1" },
+	{ label: "Oldest", value: "createdAt 1" },
 	{ label: "A-Z", value: "title 1" },
 	{ label: "Z-A", value: "title -1" },
 	{ label: "Most viewed", value: "viewedBy -1" },

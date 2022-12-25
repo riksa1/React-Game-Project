@@ -3,12 +3,12 @@ import { Box, Button, Typography, TextField, Toolbar } from "@mui/material"
 import { useAppSelector, useAppDispatch } from "hooks"
 import { useNavigate } from "react-router-dom"
 import { Formik, Form } from "formik"
-import FileBase from "react-file-base64"
 import { updateUserAsync } from "reducers/Auth"
-import { setError } from "reducers/Messages"
+// import { setError } from "reducers/Messages"
 import DrawerComponent from "components/Drawer"
 import * as Yup from "yup"
 import Avatar from "@mui/material/Avatar"
+import ImageInput from "components/ImageInput"
 
 const ProfileSchema = Yup.object().shape({
 	name: Yup.string()
@@ -62,23 +62,10 @@ const ProfileForm = () => {
 								error={formik.touched.email && formik.errors.email ? true : false}
 								{...formik.getFieldProps("email")}
 							/>
-							<Typography variant="h6" component="h6" sx={{ mb: 1 }}>
+							<Typography variant="h6" component="h6" sx={{ mb: 1, textAlign: "center" }}>
 								Profile Picture
 							</Typography>
-							<div style={{ width: "100%", marginBottom: 20 }}>
-								<FileBase
-									type="file"
-									multiple={false}
-									onDone={({ type, size, base64, name }) => {
-										if(type.split("/")[0] !== "image" || (Number(size.split(" ")[0]) > 10000)) {
-											dispatch(setError("File size should be less than 10MB and should be an image!"))
-											return
-										}
-										setImage({ base64, name })
-									}}
-									value={image}
-								/>
-							</div>
+							<ImageInput setImage={setImage} />
 							<Box
 								sx={{
 									display: "flex",

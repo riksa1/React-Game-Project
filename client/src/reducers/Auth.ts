@@ -1,8 +1,9 @@
-import { setError, setMessage } from "./Messages"
 import { deleteUser, login, register, resetPassword, updateUser } from "../api/Api"
 import { RootState, AppThunk } from "./store"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { Account, AuthState, NewUser, Password, User, EditProfile } from "types"
+import toast from "react-hot-toast"
+import { AxiosError } from "axios"
 
 const initialState: AuthState = {
 	token: null,
@@ -51,12 +52,15 @@ export const signIn = (user: User, navigate: (path: string) => void): AppThunk =
 		if (data.token) {
 			dispatch(setAuth(data))
 			localStorage.setItem("profile", JSON.stringify(data))
-			dispatch(setMessage("Logged in successfully!"))
+			toast.success("Logged in successfully!")
 			navigate("/")
 		}
 	} catch (error) {
-		dispatch(setError("Invalid credentials"))
-		console.log(error)
+		if(error instanceof AxiosError && error?.response?.data?.error) {
+			toast.error(error.response.data.error)
+		} else {
+			toast.error("Failed to log in")
+		}
 	}
 }
 
@@ -66,19 +70,22 @@ export const signUp = (user: NewUser, navigate: (path: string) => void): AppThun
 		if (data.token) {
 			dispatch(setAuth(data))
 			localStorage.setItem("profile", JSON.stringify(data))
-			dispatch(setMessage("Signed up successfully!"))
+			toast.success("Signed up successfully!")
 			navigate("/")
 		}
 	} catch (error) {
-		dispatch(setError("Invalid credentials"))
-		console.log(error)
+		if(error instanceof AxiosError && error?.response?.data?.error) {
+			toast.error(error.response.data.error)
+		} else {
+			toast.error("Failed to sign up")
+		}
 	}
 }
 
 export const signOut = (navigate: (path: string) => void): AppThunk => async dispatch => {
 	localStorage.removeItem("profile")
 	dispatch(logout())
-	dispatch(setMessage("Logged out successfully!"))
+	toast.success("Logged out successfully!")
 	navigate("/")
 }
 
@@ -88,22 +95,28 @@ export const updateUserAsync = (id: string, updatedUser: EditProfile, navigate: 
 		dispatch(editUser(data))
 		const profile = JSON.parse(localStorage.getItem("profile") || "{}")
 		localStorage.setItem("profile", JSON.stringify({ ...profile, user: data }))
-		dispatch(setMessage("Account updated successfully!"))
+		toast.success("Account updated successfully!")
 		navigate("/profile")
 	} catch (error) {
-		dispatch(setError("Failed to update account"))
-		console.log(error)
+		if(error instanceof AxiosError && error?.response?.data?.error) {
+			toast.error(error.response.data.error)
+		} else {
+			toast.error("Failed to update account")
+		}
 	}
 }
 
-export const resetPasswordAsync = (id: string, password: Password, navigate: (path: string) => void): AppThunk => async dispatch => {
+export const resetPasswordAsync = async (id: string, password: Password, navigate: (path: string) => void) => {
 	try {
 		await resetPassword(id, password)
-		dispatch(setMessage("Password reset successfully!"))
+		toast.success("Password reset successfully!")
 		navigate("/profile")
 	} catch (error) {
-		dispatch(setError("Failed to reset password"))
-		console.log(error)
+		if(error instanceof AxiosError && error?.response?.data?.error) {
+			toast.error(error.response.data.error)
+		} else {
+			toast.error("Failed to reset password")
+		}
 	}
 }
 
@@ -112,11 +125,14 @@ export const deleteUserAsync = (id: string | undefined, navigate: (path: string)
 		await deleteUser(id)
 		localStorage.removeItem("profile")
 		dispatch(logout())
-		dispatch(setMessage("Account deleted successfully!"))
+		toast.success("Account deleted successfully!")
 		navigate("/")
 	} catch (error) {
-		dispatch(setError("Failed to delete account"))
-		console.log(error)
+		if(error instanceof AxiosError && error?.response?.data?.error) {
+			toast.error(error.response.data.error)
+		} else {
+			toast.error("Failed to delete account")
+		}
 	}
 }
 

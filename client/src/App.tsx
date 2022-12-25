@@ -7,8 +7,7 @@ import Game from "./views/Game"
 import GameForm from "./views/GameForm"
 import ProfileForm from "./views/ProfileForm"
 import ChangePasswordForm from "./views/ChangePasswordForm"
-import toast, { Toaster } from "react-hot-toast"
-import { setError, setMessage } from "./reducers/Messages"
+import { Toaster } from "react-hot-toast"
 import SignIn from "./views/SignIn"
 import SignUp from "./views/SignUp"
 import { initializeAuth, setTheme } from "./reducers/Auth"
@@ -18,26 +17,11 @@ import { darkTheme, lightTheme } from "theme"
 
 const App = () => {
 	const { isAuth, theme } = useAppSelector(state => state.auth)
-	const { error, message } = useAppSelector(state => state.messages)
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
 		dispatch(initializeAuth())
 	}, [dispatch])
-
-	useEffect(() => {
-		if (error) {
-			toast.error(error)
-			dispatch(setError(null))
-		}
-	}, [error, dispatch])
-
-	useEffect(() => {
-		if (message) {
-			toast.success(message)
-			dispatch(setMessage(null))
-		}
-	}, [message, dispatch])
 
 	useEffect(() => {
 		if (localStorage.getItem("theme")) {

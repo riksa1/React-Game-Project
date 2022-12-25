@@ -24,6 +24,7 @@ export interface User {
 
 export interface NewUser extends User {
     name: string
+    confirmPassword: string
 }
 
 export interface Account extends NewUser {
@@ -53,6 +54,7 @@ export interface GameState {
     sort: SortOptions
     loading: boolean
     ownLatestGames: Game[]
+    latestGames: Game[]
 }
 
 export interface MessageState {
@@ -78,4 +80,9 @@ export interface SearchGames {
 export interface GameSearchResult extends SearchGames {
     total: number
     docs: Game[]
+}
+
+export interface Image {
+    base64: string
+    name: string
 }

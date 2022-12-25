@@ -21,6 +21,9 @@ const SignUp = () => {
 			.min(8, "Password is too short!")
 			.max(50, "Password is too long!")
 			.required("Password is required!"),
+		confirmPassword: Yup.string()
+			.oneOf([Yup.ref("password"), null], "Passwords must match!")
+			.required("Confirm password is required!"),
 	})
 
 	return (
@@ -43,10 +46,10 @@ const SignUp = () => {
                     Sign Up
 				</Typography>
 				<Formik
-					initialValues={{ email: "", password: "", name: "" }}
+					initialValues={{ email: "", password: "", name: "", confirmPassword: "" }}
 					validationSchema={SignUpSchema}
-					onSubmit={({ email, password, name }) => {
-						dispatch(signUp({ email, password, name }, navigate))
+					onSubmit={({ email, password, name, confirmPassword }) => {
+						dispatch(signUp({ email, password, name, confirmPassword }, navigate))
 					}}
 				>
 					{formik => (
@@ -83,6 +86,18 @@ const SignUp = () => {
 								onChange={formik.handleChange}
 								error={formik.touched.password && Boolean(formik.errors.password)}
 								helperText={formik.touched.password && formik.errors.password}
+								sx={{ mb: 2 }}
+							/>
+							<TextField
+								fullWidth
+								id="confirmPassword"
+								name="confirmPassword"
+								label="Confirm Password*"
+								type="password"
+								value={formik.values.confirmPassword}
+								onChange={formik.handleChange}
+								error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+								helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
 								sx={{ mb: 2 }}
 							/>
 							<Button
