@@ -7,8 +7,8 @@ interface SearchFieldProps {
 }
 
 const SearchField = ({ search }: SearchFieldProps) => {
-	const [searchQuery, setSearchQuery] = useState("")
-	const debouncedSearchQuery = useRef(searchQuery)
+	const [searchQuery, setSearchQuery] = useState<string>("")
+	const debouncedSearchQuery = useRef<string>(searchQuery)
 	const debounceTimeout = useRef<number | undefined>(undefined)
 
 	useEffect(() => {

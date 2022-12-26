@@ -9,6 +9,7 @@ import DrawerComponent from "components/Drawer"
 import * as Yup from "yup"
 import Avatar from "@mui/material/Avatar"
 import ImageInput from "components/ImageInput"
+import { Image } from "types"
 
 const ProfileSchema = Yup.object().shape({
 	name: Yup.string()
@@ -22,7 +23,7 @@ const ProfileForm = () => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const { user } = useAppSelector(state => state.auth)
-	const [image, setImage] = useState(user?.profilePicture ? user?.profilePicture : null)
+	const [image, setImage] = useState<Image | null>(user?.profilePicture ? user?.profilePicture : null)
 
 	return (
 		<>
@@ -45,19 +46,21 @@ const ProfileForm = () => {
 					{formik => (
 						<Form>
 							<TextField
+								fullWidth
 								id="Name"
 								label="Name*"
 								variant="outlined"
-								sx={{ mb: 2, width: "100%" }}
+								sx={{ mb: 2 }}
 								helperText={formik.touched.name && formik.errors.name ? formik.errors.name : null}
 								error={formik.touched.name && formik.errors.name ? true : false}
 								{...formik.getFieldProps("name")}
 							/>
 							<TextField
+								fullWidth
 								id="Email"
 								label="Email*"
 								variant="outlined"
-								sx={{ mb: 2, width: "100%" }}
+								sx={{ mb: 2 }}
 								helperText={formik.touched.email && formik.errors.email ? formik.errors.email : null}
 								error={formik.touched.email && formik.errors.email ? true : false}
 								{...formik.getFieldProps("email")}

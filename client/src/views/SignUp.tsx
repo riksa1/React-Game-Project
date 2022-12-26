@@ -7,24 +7,24 @@ import * as Yup from "yup"
 import { useAppDispatch } from "hooks"
 import NavBar from "components/NavBar"
 
+const SignUpSchema = Yup.object().shape({
+	name: Yup.string()
+		.required("Name is required!"),
+	email: Yup.string()
+		.email("Invalid email!")
+		.required("Email is required!"),
+	password: Yup.string()
+		.min(8, "Password is too short!")
+		.max(50, "Password is too long!")
+		.required("Password is required!"),
+	confirmPassword: Yup.string()
+		.oneOf([Yup.ref("password"), null], "Passwords must match!")
+		.required("Confirm password is required!"),
+})
+
 const SignUp = () => {
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
-
-	const SignUpSchema = Yup.object().shape({
-		name: Yup.string()
-			.required("Name is required!"),
-		email: Yup.string()
-			.email("Invalid email!")
-			.required("Email is required!"),
-		password: Yup.string()
-			.min(8, "Password is too short!")
-			.max(50, "Password is too long!")
-			.required("Password is required!"),
-		confirmPassword: Yup.string()
-			.oneOf([Yup.ref("password"), null], "Passwords must match!")
-			.required("Confirm password is required!"),
-	})
 
 	return (
 		<Box sx={{
@@ -36,11 +36,14 @@ const SignUp = () => {
 		}}>
 			<CssBaseline />
 			<NavBar />
-			<Box component="main" sx={{
+			<Box sx={{
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center",
 				justifyContent: "center",
+				maxWidth: 500,
+				ml: 2,
+				mr: 2,
 			}}>
 				<Typography variant="h3" component="h3" sx={{ mb: 4 }}>
                     Sign Up

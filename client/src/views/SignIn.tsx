@@ -7,19 +7,19 @@ import * as Yup from "yup"
 import { useAppDispatch } from "hooks"
 import NavBar from "components/NavBar"
 
+const SignInSchema = Yup.object().shape({
+	email: Yup.string()
+		.email("Invalid email!")
+		.required("Email is required!"),
+	password: Yup.string()
+		.min(8, "Password is too short!")
+		.max(50, "Password is too long!")
+		.required("Password is required!"),
+})
+
 const SignIn = () => {
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
-
-	const SignInSchema = Yup.object().shape({
-		email: Yup.string()
-			.email("Invalid email!")
-			.required("Email is required!"),
-		password: Yup.string()
-			.min(8, "Password is too short!")
-			.max(50, "Password is too long!")
-			.required("Password is required!"),
-	})
 
 	return (
 		<Box sx={{
@@ -31,12 +31,14 @@ const SignIn = () => {
 		}}>
 			<CssBaseline />
 			<NavBar />
-			<Box component="main" sx={{
+			<Box sx={{
 				display: "flex",
-				flexGrow: 1,
 				flexDirection: "column",
 				alignItems: "center",
 				justifyContent: "center",
+				maxWidth: 500,
+				ml: 2,
+				mr: 2,
 			}}>
 				<Typography variant="h3" component="h3" sx={{ mb: 4 }}>
                     Sign In

@@ -19,7 +19,7 @@ interface DrawerProps {
 const DrawerComponent = (props: DrawerProps) => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-	const [mobileOpen, setMobileOpen] = useState(false)
+	const [mobileOpen, setMobileOpen] = useState<boolean>(false)
 	const { window } = props
 	const { isAuth, user, theme } = useAppSelector(state => state.auth)
 

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Box, Card, CardContent, CardMedia, Toolbar, Typography } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
 import { useAppSelector } from "hooks"
@@ -9,10 +9,12 @@ const Game = () => {
 	const navigate = useNavigate()
 	const { selectedGame } = useAppSelector(state => state.games)
 
-	if(!selectedGame) {
-		toast.error("Game not found!")
-		navigate("/games")
-	}
+	useEffect(() => {
+		if(!selectedGame) {
+			toast.error("Game not found!")
+			navigate("/games")
+		}
+	}, [selectedGame, navigate])
 
 	return (
 		<>

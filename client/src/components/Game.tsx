@@ -71,7 +71,7 @@ const GameComponent = ({ _id, title, description = "", tags, image, creator, cre
 										fontWeight: "600",
 									}}
 								>
-                  +{tags.length - 5}
+									+{tags.length - 5}
 								</Box>
 							)}
 						</>

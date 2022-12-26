@@ -69,7 +69,6 @@ usersRouter.put("/:id", auth, async (req: AuthRequest, res: Response) => {
 			res.status(404).send({ error: "User not found" })
 		}
 	} catch (err) {
-		console.log(err, "hmm")
 		res.status(500).send(err)
 	}
 })

@@ -7,7 +7,7 @@ import { deleteUserAsync } from "../reducers/Auth"
 import ConfirmationModal from "components/ConfirmationModal"
 
 const Profile = () => {
-	const [open, setOpen] = useState(false)
+	const [open, setOpen] = useState<boolean>(false)
 	const { user } = useAppSelector((state) => state.auth)
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()

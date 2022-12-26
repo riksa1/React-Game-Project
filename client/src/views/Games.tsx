@@ -8,8 +8,8 @@ import SearchBar from "../components/SearchBar"
 import GameSorter from "components/GameSorter"
 
 const Games = () => {
-	const [search, setSearch] = useState("")
-	const [own, setOwn] = useState(false)
+	const [search, setSearch] = useState<string>("")
+	const [own, setOwn] = useState<boolean>(false)
 	const { isAuth, user } = useAppSelector((state) => state.auth)
 	const { games, page, total, limit, sort, loading } = useAppSelector((state) => state.games)
 	const dispatch = useAppDispatch()
@@ -21,7 +21,7 @@ const Games = () => {
 	return (
 		<>
 			<DrawerComponent />
-			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm:  `calc(100% - ${240}px)` }, ml: { sm: "240px" } }}>
+			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm: `calc(100% - ${240}px)` }, ml: { sm: "240px" } }}>
 				<Toolbar />
 				<Typography variant="h3" component="h3" sx={{ mb: 4 }}>
 					Games

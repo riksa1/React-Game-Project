@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, ChangeEvent  } from "react"
 import { Button, Box } from "@mui/material"
 import { Image } from "types"
 import toast from "react-hot-toast"
@@ -16,8 +16,8 @@ const ImageInput = ({ setImage }: ImageInputProps) => {
 		}
 	}
 
-	const handleBase64Image = ({ target: { files } }) => {
-		const loadedImage = files[0]
+	const handleBase64Image = ({ target: { files } }: ChangeEvent<HTMLInputElement>) => {
+		const loadedImage = files?.[0] as File
 		if(loadedImage.type !== "image/jpeg" && loadedImage.type !== "image/png") {
 			toast.error("File type is not supported!")
 			return

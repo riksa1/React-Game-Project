@@ -52,7 +52,6 @@ gamesRouter.post("/search/paginate", async (req, res: Response) => {
 			sort: sort
 		})
 	} catch (err) {
-		console.log(err)
 		res.status(500).json(err)
 	}
 })

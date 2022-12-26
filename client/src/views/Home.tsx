@@ -18,9 +18,9 @@ const Home = () => {
 	return (
 		<>
 			<DrawerComponent />
-			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm:  `calc(100% + ${240}px)` }  }}>
+			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm:  `calc(100% - ${240}px)` }, ml: { sm: "240px" } }}>
 				<Toolbar />
-				<Typography variant="h4" component="h1" gutterBottom>
+				<Typography variant="h4" component="h1" sx={{ mb: 4 }}>
 					Welcome to the Game Library
 				</Typography>
 				<Container>
@@ -30,7 +30,9 @@ const Home = () => {
 								Your latest games
 							</Typography>
 							{loading ? (
-								<CircularProgress />
+								<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: 4 }}>
+									<CircularProgress />
+								</Box>
 							) : ownLatestGames.length ? (
 								<Grow in>
 									<Grid container spacing={2}>
@@ -58,11 +60,13 @@ const Home = () => {
 							)}
 						</>
 					)}
-					<Typography variant="h5" component="h2" gutterBottom sx={{ textAlign: "center" }}>
+					<Typography variant="h5" component="h2" gutterBottom sx={{ textAlign: "center", mt: 4 }}>
 						Latest games
 					</Typography>
 					{loading ? (
-						<CircularProgress />
+						<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: 4 }}>
+							<CircularProgress />
+						</Box>
 					) : latestGames.length > 0 ? (
 						<Grow in>
 							<Grid container spacing={2}>
