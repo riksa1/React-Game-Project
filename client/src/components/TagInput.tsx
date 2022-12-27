@@ -19,6 +19,7 @@ const TagInput = ({ tags, setTags }: TagInputProps) => {
 	return (
 		<Box>
 			<Autocomplete
+				id="tags"
 				options={[]}
 				multiple
 				freeSolo

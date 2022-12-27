@@ -24,7 +24,7 @@ const NavBar = () => {
 					<Typography variant="h6">
 						{theme === "dark" ? "Dark" : "Light"}
 					</Typography>
-					<Switch checked={theme === "dark"} onChange={handleThemeChange} />
+					<Switch id="theme-switch" checked={theme === "dark"} onChange={handleThemeChange} />
 				</Toolbar>
 			</AppBar>
 		</>

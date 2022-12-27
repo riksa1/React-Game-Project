@@ -48,7 +48,7 @@ const ImageInput = ({ setImage }: ImageInputProps) => {
 			}}
 		>
 			<input type="file" ref={imageInputRef} hidden onChange={handleBase64Image} />
-			<Button sx={{ width: "100%", mb: 2, height: 55 }} variant="contained" onClick={handleTriggerImageInput}>Upload Image</Button>
+			<Button id="image-input-trigger" sx={{ width: "100%", mb: 2, height: 55 }} variant="contained" onClick={handleTriggerImageInput}>Upload Image</Button>
 		</Box>
 	)
 }

@@ -48,7 +48,7 @@ const DrawerComponent = (props: DrawerProps) => {
 				) : (
 					<>
 						<Typography variant="h6" noWrap component="div" sx={{ mb: 2 }}>
-              Log in to view your profile
+							Log in to view your profile
 						</Typography>
 						<Button sx={{ mb: 3 }} variant="contained" onClick={() => navigate("/signin")}>Login</Button>
 					</>
@@ -130,6 +130,7 @@ const DrawerComponent = (props: DrawerProps) => {
 						{theme === "light" ? "Light" : "Dark"} Mode
 					</Typography>
 					<Switch
+						id="theme-switch"
 						checked={theme === "light" ? false : true}
 						onChange={() => {
 							localStorage.setItem("theme", theme === "light" ? "dark" : "light")

@@ -35,6 +35,7 @@ const SearchField = ({ search }: SearchFieldProps) => {
 
 	return (
 		<TextField
+			id="search"
 			label="Search"
 			type="search"
 			variant="outlined"

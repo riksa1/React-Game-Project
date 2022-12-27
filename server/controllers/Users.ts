@@ -105,7 +105,7 @@ usersRouter.delete("/:id", auth, async (req: AuthRequest, res: Response) => {
 	const authUser = req.user as User
 	const { id } = req.params
 	try {
-		if(authUser._id.equals(id))
+		if(!authUser._id.equals(id))
 			return res.status(401).send({ error: "You can only delete your own account" })
 		await userSchema.findByIdAndDelete(id)
 		await gameSchema.deleteMany({ creator: id })

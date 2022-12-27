@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.ts",
-    "dev": "nodemon app.ts",
+    "start": "cross-env NODE_ENV=production node app.ts",
+    "dev": "cross-env NODE_ENV=development nodemon app.ts",
+    "dev:test": "cross-env NODE_ENV=test nodemon app.ts",
     "lint": "eslint .",
     "load-sample-data": "ts-node sampleData.ts"
   },
@@ -28,6 +29,7 @@
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "eslint": "^8.30.0",
     "eslint-plugin-react": "^7.31.11",
     "nodemon": "^2.0.20",
