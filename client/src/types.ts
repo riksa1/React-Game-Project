@@ -2,6 +2,40 @@ export type SortOptions = "title 1" | "title -1" | "createdAt 1" | "createdAt -1
 
 export type Theme = "light" | "dark"
 
+export interface Image {
+    base64: string
+    name: string
+}
+
+export interface User {
+    email: string
+    password: string
+}
+
+export interface NewUser extends User {
+    name: string
+    confirmPassword: string
+}
+
+export interface Account extends NewUser {
+    _id: string
+    createdAt: string
+    profilePicture?: { base64: string, name: string } | null
+}
+
+export interface NewReview {
+    description?: string
+    rating: number
+}
+
+export interface Review extends NewReview {
+    _id: string
+    game: { _id: string, title: string }
+    creator: Account
+    createdAt: string
+    updatedAt: string
+}
+
 export interface NewGame {
     title: string
     description: string
@@ -15,6 +49,7 @@ export interface Game extends NewGame {
     createdAt: string
     updatedAt: string
     viewedBy: string[]
+    reviews: Review[]
 }
 
 export interface User {
@@ -80,9 +115,4 @@ export interface SearchGames {
 export interface GameSearchResult extends SearchGames {
     total: number
     docs: Game[]
-}
-
-export interface Image {
-    base64: string
-    name: string
 }

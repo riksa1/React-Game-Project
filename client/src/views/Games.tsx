@@ -79,6 +79,7 @@ const Games = () => {
 											createdAt={game.createdAt}
 											updatedAt={game.updatedAt}
 											viewedBy={game.viewedBy}
+											reviews={game.reviews}
 										/>
 									</Grid>
 								))}

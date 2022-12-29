@@ -1,6 +1,19 @@
 import { Request } from "express"
 import { Document, Types } from "mongoose"
 
+export interface NewReview extends Document {
+    description?: string
+    rating: number
+    game: Types.ObjectId
+}
+
+export interface Review extends NewReview {
+    _id: Types.ObjectId
+    creator: Types.ObjectId
+    createdAt: string
+    updatedAt: string
+}
+
 export interface NewGame extends Document {
     title: string
     description: string
@@ -17,6 +30,7 @@ export interface Game extends NewGame {
     createdAt: string
     updatedAt: string
     viewedBy: Types.ObjectId[]
+    reviews: Types.ObjectId[] | Review[]
 }
 
 export interface NewUser extends Document {

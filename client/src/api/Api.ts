@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios"
-import { NewGame, User, Password, EditProfile, SearchGames } from "types"
+import { NewGame, User, Password, EditProfile, SearchGames, NewReview } from "types"
 
 const API = axios.create({ baseURL: "http://localhost:3001/api" })
 
@@ -24,3 +24,4 @@ export const createGame = (newGame: NewGame) => API.post("/games", newGame)
 export const updateGame = (id: string, updatedGame: NewGame) => API.put(`/games/${id}`, updatedGame)
 export const deleteGame = (id: string) => API.delete(`/games/${id}`)
 export const setGameViewed = (id: string) => API.put(`/games/${id}/view`)
+export const createReview = (id: string, review: NewReview) => API.post(`/games/${id}/review`, review)

@@ -2,8 +2,9 @@
 require("dotenv").config({ path: __dirname+"/.env" })
 import { faker } from "@faker-js/faker"
 import mongoose from "mongoose"
-import Game from "./schemas/Game"
-import User from "./schemas/User"
+import gameSchema from "./schemas/Game"
+import userSchema from "./schemas/User"
+import reviewSchema from "./schemas/Review"
 
 const games = [
 	{
@@ -135,11 +136,12 @@ export const seed = async () => {
 
 		console.log("MongoDB Connected")
 
-		await User.deleteMany({})
-		await Game.deleteMany({})
+		await userSchema.deleteMany({})
+		await gameSchema.deleteMany({})
+		await reviewSchema.deleteMany({})
 
-		const createdUsers = await User.insertMany(users)
-		const createdGames = await Game.insertMany(games)
+		const createdUsers = await userSchema.insertMany(users)
+		const createdGames = await gameSchema.insertMany(games)
 		for(let i = 0; i < createdGames.length; i++) {
 			createdGames[i].creator = createdUsers[i]._id
 			createdUsers[i].games.push(createdGames[i]._id)

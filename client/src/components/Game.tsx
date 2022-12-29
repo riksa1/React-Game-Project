@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "hooks"
 import { format } from "date-fns"
 import { Game } from "types"
 
-const GameComponent = ({ _id, title, description = "", tags, image, creator, createdAt, updatedAt, viewedBy }: Game) => {
+const GameComponent = ({ _id, title, description = "", tags, image, creator, createdAt, updatedAt, viewedBy, reviews }: Game) => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const { user } = useAppSelector(state => state.auth)
@@ -106,7 +106,8 @@ const GameComponent = ({ _id, title, description = "", tags, image, creator, cre
 							creator,
 							createdAt,
 							updatedAt,
-							viewedBy
+							viewedBy,
+							reviews
 						}))
 						navigate("/games/game")
 					}}>
@@ -124,7 +125,8 @@ const GameComponent = ({ _id, title, description = "", tags, image, creator, cre
 									creator,
 									createdAt,
 									updatedAt,
-									viewedBy
+									viewedBy,
+									reviews
 								}))
 								navigate("/editgame")
 							}}>Edit</Button>

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { Game, GameState, NewGame, GameSearchResult, SortOptions } from "types"
-import { createGame, updateGame, deleteGame, searchGames, setGameViewed } from "../api/Api"
+import { Game, GameState, NewGame, GameSearchResult, SortOptions, NewReview, Review } from "types"
+import { createGame, updateGame, deleteGame, searchGames, setGameViewed, createReview } from "../api/Api"
 import { RootState, AppThunk } from "./store"
 import toast from "react-hot-toast"
 import { AxiosError } from "axios"
@@ -49,11 +49,16 @@ export const gamesSlice = createSlice({
 		},
 		setLatestGames: (state, action: PayloadAction<Game[]>) => {
 			state.latestGames = action.payload
+		},
+		addReview: (state, action: PayloadAction<Review>) => {
+			if(state.selectedGame) {
+				state.selectedGame.reviews.push(action.payload)
+			}
 		}
 	}
 })
 
-export const { setGames, addGame, editGame, removeGame, setSelectedGame, setLoading, setLatestOwnGames, setLatestGames } = gamesSlice.actions
+export const { setGames, addGame, editGame, removeGame, setSelectedGame, setLoading, setLatestOwnGames, setLatestGames, addReview } = gamesSlice.actions
 
 export const games = (state: RootState) => state.games
 
@@ -150,6 +155,20 @@ export const setGameViewedAsync = (id: string): AppThunk => async (_dispatch, ge
 		if(auth.user && !games.loading)
 			if(!games.games.find(game => game?._id === id)?.viewedBy.includes(auth.user._id))
 				await setGameViewed(id)
+	} catch (error) {
+		if(error instanceof AxiosError && error?.response?.data?.error) {
+			toast.error(error.response.data.error)
+		} else {
+			toast.error("Something went wrong!")
+		}
+	}
+}
+
+export const createReviewAsync = (id: string, review: NewReview): AppThunk => async dispatch => {
+	try {
+		const { data } = await createReview(id, review)
+		dispatch(addReview(data))
+		toast.success("Review created successfully!")
 	} catch (error) {
 		if(error instanceof AxiosError && error?.response?.data?.error) {
 			toast.error(error.response.data.error)

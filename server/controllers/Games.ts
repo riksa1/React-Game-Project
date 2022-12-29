@@ -1,8 +1,9 @@
 import express, { Response } from "express"
 import gameSchema from "../schemas/Game"
 import userSchema from "../schemas/User"
+import reviewSchema from "../schemas/Review"
 import auth from "../middleware/Auth"
-import { AuthRequest, Game, User, GameSearchOptions, GameQuery } from "../types"
+import { AuthRequest, Game, User, GameSearchOptions, GameQuery, Review } from "../types"
 
 const gamesRouter = express.Router()
 
@@ -40,7 +41,15 @@ gamesRouter.post("/search/paginate", async (req, res: Response) => {
 			options.limit = parseInt(limit)
 		}
 
-		const games = await gameSchema.find(query, null, options).populate("creator", "name")
+		const games = await gameSchema.find(query, null, options).populate({
+			path: "creator",
+			select: "name"
+		}).populate({
+			path: "reviews",
+			populate: {
+				path: "creator",
+			}
+		})
 
 		const total = await gameSchema.countDocuments(query)
 
@@ -111,10 +120,30 @@ gamesRouter.put("/:id/view", auth, async (req: AuthRequest, res: Response) => {
 		if (!game) {
 			return res.status(404).json({ error: "Game not found!" })
 		}
-		if(!game.viewedBy.includes(user._id)) {
+		if (!game.viewedBy.includes(user._id)) {
 			await game.updateOne({ $push: { viewedBy: user._id } })
 		}
 		res.status(200).json({ message: "Game viewed successfully!" })
+	} catch (err) {
+		res.status(500).json(err)
+	}
+})
+
+gamesRouter.post("/:id/review", auth, async (req: AuthRequest, res: Response) => {
+	const user = req.user as User
+	try {
+		const game: Game | null = await gameSchema.findById(req.params.id).populate("reviews")
+		if (!game) {
+			return res.status(404).json({ error: "Game not found!" })
+		}
+		const reviews = game.reviews as Review[]
+		if (!reviews.find((review: Review) => review.creator.equals(user._id))) {
+			const review = new reviewSchema({ ...req.body, game: game._id, creator: user._id })
+			await review.save()
+			await game.updateOne({ $push: { reviews: review._id } })
+		}
+		const newReview = await reviewSchema.findOne({ creator: user._id, game: game._id }).populate("creator")
+		res.status(200).json(newReview)
 	} catch (err) {
 		res.status(500).json(err)
 	}
