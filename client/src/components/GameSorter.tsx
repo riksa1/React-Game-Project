@@ -13,7 +13,9 @@ const options = [
 	{ label: "A-Z", value: "title 1" },
 	{ label: "Z-A", value: "title -1" },
 	{ label: "Most viewed", value: "viewedBy -1" },
-	{ label: "Least viewed", value: "viewedBy 1" }
+	{ label: "Least viewed", value: "viewedBy 1" },
+	{ label: "Best rated", value: "reviews.rating -1" },
+	{ label: "Worst rated", value: "reviews.rating 1" },
 ]
 
 const GameSorter = ({ sort, setSortOption }: GameFilterProps) => {

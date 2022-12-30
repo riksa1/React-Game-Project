@@ -31,6 +31,9 @@ export interface Game extends NewGame {
     updatedAt: string
     viewedBy: Types.ObjectId[]
     reviews: Types.ObjectId[] | Review[]
+    developer: string
+    releaseDate: string
+    averageRating: number | null
 }
 
 export interface NewUser extends Document {

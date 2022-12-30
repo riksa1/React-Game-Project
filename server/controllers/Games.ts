@@ -51,6 +51,24 @@ gamesRouter.post("/search/paginate", async (req, res: Response) => {
 			}
 		})
 
+		for(const game of games) {
+			game.toJSON()
+		}
+
+		if(sortField === "reviews.rating") {
+			games.sort((a, b) =>  {
+				if(a.averageRating === null && b.averageRating === null) {
+					return 0
+				} else if(a.averageRating === null) {
+					return 1
+				}
+				else if(b.averageRating === null) {
+					return -1
+				}
+				return sortOrder === 1 ? a.averageRating - b.averageRating : b.averageRating - a.averageRating
+			})
+		}
+
 		const total = await gameSchema.countDocuments(query)
 
 		res.status(200).send({
@@ -61,6 +79,7 @@ gamesRouter.post("/search/paginate", async (req, res: Response) => {
 			sort: sort
 		})
 	} catch (err) {
+		console.log(err)
 		res.status(500).json(err)
 	}
 })

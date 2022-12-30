@@ -15,7 +15,7 @@ const ReviewForm = () => {
 	const { selectedGame } = useAppSelector(state => state.games)
 
 	return (
-		<Box>
+		<>
 			<Typography variant="h3" component="h3" sx={{ mb: 4, textAlign: "center" }}>
                 Add Review
 			</Typography>
@@ -71,7 +71,7 @@ const ReviewForm = () => {
 					</Form>
 				)}
 			</Formik>
-		</Box>
+		</>
 	)
 }
 

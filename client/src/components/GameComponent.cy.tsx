@@ -20,6 +20,9 @@ describe("<GameComponent />", () => {
 						updatedAt="2021-10-02T00:00:00.000Z"
 						viewedBy={[]}
 						reviews={[]}
+						developer="Test Developer"
+						releaseDate="2021-10-01T00:00:00.000Z"
+						averageRating={0}
 					/>
 				</BrowserRouter>
 			</Provider>

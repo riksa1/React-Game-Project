@@ -1,11 +1,13 @@
 import mongoose, { Model, Schema } from "mongoose"
-import { Game } from "../types"
+import { Game, Review } from "../types"
 
 const gameSchema: Schema = new mongoose.Schema({
-	title: { type: String, required: true, minLength: 3, maxLength: 50 },
+	title: { type: String, required: true, minLength: 3, maxLength: 100 },
 	description: { type: String, required: true, minLength: 3, maxLength: 1000 },
 	creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 	tags: [String],
+	developer: { type: String, minLength: 3, maxLength: 100, required: true },
+	releaseDate: { type: Date, required: true },
 	image: {
 		name: { type: String },
 		base64: { type: String },
@@ -26,6 +28,19 @@ const gameSchema: Schema = new mongoose.Schema({
 		ref: "Review"
 	}]
 })
+
+gameSchema.virtual("averageRating").get(function (this: Game) {
+	if (this.reviews.length === 0) {
+		return null
+	}
+
+	const reviews = this.reviews as Review[]
+	const total = reviews.reduce((acc: number, review: Review) => acc + review.rating, 0)
+	return total / this.reviews.length
+})
+
+gameSchema.set("toObject", { virtuals: true })
+gameSchema.set("toJSON", { virtuals: true })
 
 const GameModel: Model<Game> = mongoose.model<Game>("Game", gameSchema)
 

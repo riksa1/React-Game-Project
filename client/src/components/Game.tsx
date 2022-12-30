@@ -1,12 +1,12 @@
 import React from "react"
-import { Card, CardMedia, CardContent, CardActions, Button, Typography, Box } from "@mui/material"
+import { Card, CardMedia, CardContent, CardActions, Button, Typography, Box, Rating } from "@mui/material"
 import { deleteGameAsync, setSelectedGame, setGameViewedAsync } from "../reducers/Games"
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "hooks"
 import { format } from "date-fns"
 import { Game } from "types"
 
-const GameComponent = ({ _id, title, description = "", tags, image, creator, createdAt, updatedAt, viewedBy, reviews }: Game) => {
+const GameComponent = ({ _id, title, description = "", tags, image, creator, createdAt, updatedAt, viewedBy, reviews, developer, releaseDate, averageRating }: Game) => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const { user } = useAppSelector(state => state.auth)
@@ -77,15 +77,34 @@ const GameComponent = ({ _id, title, description = "", tags, image, creator, cre
 						</>
 					)}
 					<Typography variant="body2" color="text.secondary">
-						{creator?.name} {user && user._id.toString() === creator?._id.toString() && "(You)"}
+						Developer: {developer}
 					</Typography>
 					<Typography variant="body2" color="text.secondary">
-						Created: {format(new Date(createdAt), "dd/MM/yyyy")}
+						Release Date: {format(new Date(releaseDate), "dd/MM/yyyy")}
 					</Typography>
-					{updatedAt && (
+					{user && user._id === creator?._id && (
 						<Typography variant="body2" color="text.secondary">
-							Updated: {format(new Date(updatedAt), "dd/MM/yyyy")}
+							{viewedBy?.length} Views
 						</Typography>
+					)}
+					<Typography variant="body2" color="text.secondary">
+						{creator?.name} {user && user._id === creator?._id && "(You)"}
+					</Typography>
+					{averageRating > 0 && (
+						<Box sx={{ display: "flex", alignItems: "center", pt: 2 }}>
+							<Box sx={{ display: "flex", alignItems: "center" }}>
+								<Rating
+									name="game-rating"
+									value={averageRating}
+									readOnly
+									sx={{ fontSize: "0.875rem" }}
+									precision={0.1}
+								/>
+								<Typography variant="body2" sx={{ ml: 1 }}>
+									{averageRating.toFixed(1)}
+								</Typography>
+							</Box>
+						</Box>
 					)}
 				</CardContent>
 				<CardActions
@@ -107,7 +126,10 @@ const GameComponent = ({ _id, title, description = "", tags, image, creator, cre
 							createdAt,
 							updatedAt,
 							viewedBy,
-							reviews
+							reviews,
+							developer,
+							releaseDate,
+							averageRating,
 						}))
 						navigate("/games/game")
 					}}>
@@ -126,7 +148,10 @@ const GameComponent = ({ _id, title, description = "", tags, image, creator, cre
 									createdAt,
 									updatedAt,
 									viewedBy,
-									reviews
+									reviews,
+									developer,
+									releaseDate,
+									averageRating,
 								}))
 								navigate("/editgame")
 							}}>Edit</Button>

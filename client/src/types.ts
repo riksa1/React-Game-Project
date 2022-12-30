@@ -1,4 +1,4 @@
-export type SortOptions = "title 1" | "title -1" | "createdAt 1" | "createdAt -1"
+export type SortOptions = "title 1" | "title -1" | "createdAt 1" | "createdAt -1" | "viewedBy 1" | "viewedBy -1" | "reviews.rating 1" | "reviews.rating -1"
 
 export type Theme = "light" | "dark"
 
@@ -41,6 +41,8 @@ export interface NewGame {
     description: string
     image: { base64: string, name: string } | null
     tags: string[]
+    developer: string
+    releaseDate: string
 }
 
 export interface Game extends NewGame {
@@ -50,6 +52,7 @@ export interface Game extends NewGame {
     updatedAt: string
     viewedBy: string[]
     reviews: Review[]
+    averageRating: number
 }
 
 export interface User {
