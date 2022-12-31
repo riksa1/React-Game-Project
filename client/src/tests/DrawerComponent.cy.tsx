@@ -1,24 +1,22 @@
 import React from "react"
-import { Provider } from "react-redux"
+import DrawerComponent from "../components/Drawer"
 import { BrowserRouter } from "react-router-dom"
-import NavBar from "./NavBar"
+import { Provider } from "react-redux"
 import { store } from "../reducers/store"
 
-describe("<NavBar />", () => {
+describe("<DrawerComponent />", () => {
 	it("renders", () => {
 		cy.mount(
 			<Provider store={store}>
 				<BrowserRouter>
-					<NavBar />
+					<DrawerComponent />
 				</BrowserRouter>
 			</Provider>
 		)
-		cy.contains("Home")
-		cy.contains("Games")
-		cy.contains("Light")
+		cy.contains("Light Mode")
 		cy.get("#theme-switch").should("not.be.checked")
 		cy.get("#theme-switch").check()
 		cy.get("#theme-switch").should("be.checked")
-		cy.contains("Dark")
+		cy.contains("Dark Mode")
 	})
 })

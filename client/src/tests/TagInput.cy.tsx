@@ -1,5 +1,5 @@
 import React from "react"
-import TagInput from "./TagInput"
+import TagInput from "../components/TagInput"
 
 describe("<TagInput />", () => {
 	it("renders", () => {

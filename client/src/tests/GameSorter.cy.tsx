@@ -1,5 +1,5 @@
 import React from "react"
-import GameSorter from "./GameSorter"
+import GameSorter from "../components/GameSorter"
 
 describe("<GameSorter />", () => {
 	it("renders", () => {

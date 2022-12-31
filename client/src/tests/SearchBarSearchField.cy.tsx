@@ -1,5 +1,5 @@
 import React from "react"
-import SearchField from "./SearchBar"
+import SearchField from "../components/SearchBar"
 
 describe("<SearchField />", () => {
 	it("renders", () => {

@@ -1,7 +1,7 @@
 import React from "react"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
-import GameComponent from "./Game"
+import GameComponent from "../components/Game"
 import { store } from "../reducers/store"
 
 describe("<GameComponent />", () => {
@@ -29,6 +29,9 @@ describe("<GameComponent />", () => {
 		)
 		cy.contains("Test Game")
 		cy.contains("Test Description")
-		cy.contains("Created: 01/10/2021")
+		cy.contains("Release Date: 01/10/2021")
+		cy.contains("Developer: Test Developer")
+		cy.contains("View").click()
+		cy.url().should("include", "/games/game")
 	})
 })

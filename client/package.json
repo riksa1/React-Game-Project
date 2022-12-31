@@ -29,7 +29,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "cy:run:component": "cypress run --component",
+    "cy:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
