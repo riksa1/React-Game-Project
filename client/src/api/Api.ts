@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios"
 import { NewGame, User, Password, EditProfile, SearchGames, NewReview } from "types"
 
-const API = axios.create({ baseURL: "http://localhost:3001/api" })
+// const API = axios.create({ baseURL: "https://gamelibrayapp1.fly.dev/api" }) // Production
+const API = axios.create({ baseURL: "http://localhost:8080/api" }) // Development
 
 API.interceptors.request.use((req: AxiosRequestConfig) => {
 	if (localStorage.getItem("profile")) {

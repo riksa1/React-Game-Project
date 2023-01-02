@@ -4,6 +4,7 @@ import userSchema from "../schemas/User"
 import reviewSchema from "../schemas/Review"
 import auth from "../middleware/Auth"
 import { AuthRequest, Game, User, GameSearchOptions, GameQuery, Review } from "../types"
+import { filterBadWordsFromGame } from "../utils/utils"
 
 const gamesRouter = express.Router()
 
@@ -85,7 +86,8 @@ gamesRouter.post("/search/paginate", async (req, res: Response) => {
 
 gamesRouter.post("/", auth, async (req: AuthRequest, res: Response) => {
 	const user = req.user as User
-	const newGame = new gameSchema({ ...req.body, creator: req.user && req.user._id })
+	const game = filterBadWordsFromGame(req.body)
+	const newGame = new gameSchema({ ...game, creator: req.user && req.user._id })
 	try {
 		const savedGame = await newGame.save()
 		await userSchema.findByIdAndUpdate(user._id, { $push: { games: savedGame._id } })
@@ -97,13 +99,14 @@ gamesRouter.post("/", auth, async (req: AuthRequest, res: Response) => {
 
 gamesRouter.put("/:id", auth, async (req: AuthRequest, res: Response) => {
 	const user = req.user as User
+	const filteredGame = filterBadWordsFromGame(req.body)
 	try {
 		const game: Game | null = await gameSchema.findById(req.params.id)
 		if (!game) {
 			return res.status(404).json({ error: "Game not found!" })
 		}
 		if (user._id.equals(game.creator)) {
-			await game.updateOne({ ...req.body, updatedAt: new Date() })
+			await game.updateOne({ ...filteredGame, updatedAt: new Date() })
 			res.status(200).json({ message: "Game updated successfully!" })
 		} else {
 			res.status(403).json({ error: "You can only update your own games!" })
