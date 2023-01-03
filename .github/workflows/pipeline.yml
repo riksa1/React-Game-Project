@@ -26,7 +26,8 @@ jobs:
         run: |
           cd client && npm run build && cd .. && npm run build
   deploy:
-    needs: build
+    needs: [build]
+    # if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
