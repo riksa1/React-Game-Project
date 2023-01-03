@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Box, Toolbar, Typography, Avatar, Button } from "@mui/material"
+import { Box, Toolbar, Typography, Avatar, Button, Grid } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
 import { useAppSelector, useAppDispatch } from "hooks"
 import { useNavigate } from "react-router-dom"
@@ -14,7 +14,7 @@ const Profile = () => {
 	return (
 		<>
 			<DrawerComponent />
-			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm:  `calc(100% + ${240}px)` }  }}>
+			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm:  `calc(100% - ${240}px)` }, ml: { sm: "240px" } }}>
 				<Toolbar />
 				<Typography variant="h3" component="h3" sx={{ mb: 4 }}>
 					Profile
@@ -28,30 +28,23 @@ const Profile = () => {
 				<Typography variant="h6" component="h6" sx={{ mb: 5, textAlign: "center" }}>
 					{user && user.email}
 				</Typography>
-				<Box
-					sx={{
-						mt: "auto",
-						display: "flex",
-						justifyContent: "space-between",
-						alignItems: "center",
-					}}
-				>
-					<Button variant="contained" color="success" sx={{ mr: 2 }}
-						onClick={() => navigate("/editprofile")}
-					>
-						Edit Profile
-					</Button>
-					<Button variant="contained" sx={{ mr: 2 }}
-						onClick={() => navigate("/changepassword")}
-					>
-						Change Password
-					</Button>
-					<Button variant="contained" color="error"
-						onClick={() => setOpen(true)}
-					>
-						Delete Account
-					</Button>
-				</Box>
+				<Grid>
+					<Grid item sx={{ mb: 2, textAlign: "center" }}>
+						<Button sx={{ width: "100%", height: 55 }} variant="contained" color="success" onClick={() => navigate("/editprofile")}>
+							Edit Profile
+						</Button>
+					</Grid>
+					<Grid item sx={{ mb: 2, textAlign: "center" }}>
+						<Button sx={{ width: "100%", height: 55 }} variant="contained" onClick={() => navigate("/changepassword")}>
+							Change Password
+						</Button>
+					</Grid>
+					<Grid item sx={{ mb: 2, textAlign: "center" }}>
+						<Button sx={{ width: "100%", height: 55 }} variant="contained" color="error" onClick={() => setOpen(true)}>
+							Delete Account
+						</Button>
+					</Grid>
+				</Grid>
 			</Box>
 			<ConfirmationModal
 				open={open}

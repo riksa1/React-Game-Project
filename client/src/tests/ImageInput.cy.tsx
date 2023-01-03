@@ -1,5 +1,5 @@
 import React from "react"
-import ImageInput from "./ImageInput"
+import ImageInput from "../components/ImageInput"
 
 describe("<ImageInput />", () => {
 	it("renders", () => {

@@ -18,12 +18,18 @@ interface GameFormProps {
 const NewGameSchema = Yup.object().shape({
 	title: Yup.string()
 		.min(3, "Title is too short!")
-		.max(50, "Title is too long!")
+		.max(100, "Title is too long!")
 		.required("Title is required!"),
 	description: Yup.string()
 		.min(3, "Description is too short!")
 		.max(1000, "Description is too long!")
 		.required("Description is required!"),
+	developer: Yup.string()
+		.min(3, "Developer is too short!")
+		.max(100, "Developer is too long!")
+		.required("Developer is required!"),
+	releaseDate: Yup.date()
+		.required("Release date is required!"),
 })
 
 const GameForm = ({ editing = false }: GameFormProps) => {
@@ -62,13 +68,15 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 						initialValues={{
 							title: editing && selectedGame ? selectedGame.title : "",
 							description: editing && selectedGame ? selectedGame.description : "",
+							developer: editing && selectedGame ? selectedGame.developer : "",
+							releaseDate: editing && selectedGame ? selectedGame.releaseDate : "",
 						}}
 						validationSchema={NewGameSchema}
-						onSubmit={({ title, description }) => {
+						onSubmit={({ title, description, developer, releaseDate }) => {
 							if (editing && selectedGame)
-								dispatch(updateGameAsync(selectedGame._id, { title, description, tags, image }, navigate))
+								dispatch(updateGameAsync(selectedGame._id, { title, description, tags, image, developer, releaseDate }, navigate))
 							else
-								createGameAsync({ title, description, tags, image }, navigate)
+								createGameAsync({ title, description, tags, image, developer, releaseDate }, navigate)
 						}}
 					>
 						{formik => (
@@ -94,6 +102,30 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 									helperText={formik.touched.description && formik.errors.description ? formik.errors.description : null}
 									error={formik.touched.description && formik.errors.description ? true : false}
 									{...formik.getFieldProps("description")}
+								/>
+								<TextField
+									fullWidth
+									id="developer"
+									label="Developer*"
+									variant="outlined"
+									sx={{ mb: 2  }}
+									helperText={formik.touched.developer && formik.errors.developer ? formik.errors.developer : null}
+									error={formik.touched.developer && formik.errors.developer ? true : false}
+									{...formik.getFieldProps("developer")}
+								/>
+								<TextField
+									fullWidth
+									id="releaseDate"
+									label="Release Date*"
+									variant="outlined"
+									sx={{ mb: 2 }}
+									type="date"
+									InputLabelProps={{
+										shrink: true,
+									}}
+									helperText={formik.touched.releaseDate && formik.errors.releaseDate ? formik.errors.releaseDate : null}
+									error={formik.touched.releaseDate && formik.errors.releaseDate ? true : false}
+									{...formik.getFieldProps("releaseDate")}
 								/>
 								<TagInput tags={tags} setTags={setTags} />
 								<Typography variant="h6" component="h6" sx={{ mt: 2, mb: 1, textAlign: "center" }}>

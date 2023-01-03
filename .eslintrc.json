@@ -43,5 +43,9 @@
             "error", { "before": true, "after": true }
         ]
     },
+<<<<<<< HEAD:.eslintrc.json
     "ignorePatterns": ["dist/", "node_modules/", "client/"]
+=======
+    "ignorePatterns": ["dist/", "node_modules/"]
+>>>>>>> 22d6c1c780be58cd729c073013941881bd210750:server/.eslintrc.json
 }

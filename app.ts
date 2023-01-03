@@ -1,5 +1,5 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
-require("dotenv").config({ path: __dirname+"/.env" })
+require("dotenv").config({ path: __dirname + "/.env" })
 import express from "express"
 import mongoose from "mongoose"
 import cors from "cors" // dev
@@ -40,4 +40,3 @@ app.get("/health", (_req, res) => {
 mongoose.connect(process.env.MONGODB_URL as string)
 	.then(() => app.listen({ port: PORT, host: "0.0.0.0" }, () => console.log(`Server running on port ${PORT}`)))
 	.catch((error) => console.log(error.message))
-

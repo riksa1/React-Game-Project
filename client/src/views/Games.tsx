@@ -79,6 +79,10 @@ const Games = () => {
 											createdAt={game.createdAt}
 											updatedAt={game.updatedAt}
 											viewedBy={game.viewedBy}
+											reviews={game.reviews}
+											developer={game.developer}
+											releaseDate={game.releaseDate}
+											averageRating={game.averageRating}
 										/>
 									</Grid>
 								))}
