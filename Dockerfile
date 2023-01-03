@@ -20,8 +20,8 @@ WORKDIR /app
 ENV NODE_ENV production
 
 COPY . .
-# npm install && npm run build
-RUN npm install
+
+RUN npm install && npm run build
 FROM debian:bullseye
 
 LABEL fly_launch_runtime="nodejs"
