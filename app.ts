@@ -8,8 +8,7 @@ import gamesRouter from "./controllers/Games"
 import usersRouter from "./controllers/Users"
 import testingRouter from "./controllers/Testing"
 import { ExpressJsonOptions } from "./types"
-import rateLimiter from "./utils/rateLimiter"
-
+import rateLimiter from "./utils/RateLimiter"
 const app = express()
 const PORT =  process.env.PORT || 8080
 
