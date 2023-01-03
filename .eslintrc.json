@@ -42,5 +42,6 @@
         "arrow-spacing": [
             "error", { "before": true, "after": true }
         ]
-    }
+    },
+    "ignorePatterns": ["dist/", "node_modules/", "client/"]
 }

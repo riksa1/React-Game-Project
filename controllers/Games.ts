@@ -1,8 +1,10 @@
 import express, { Response } from "express"
 import gameSchema from "../schemas/Game"
 import userSchema from "../schemas/User"
+import reviewSchema from "../schemas/Review"
 import auth from "../middleware/Auth"
-import { AuthRequest, Game, User, GameSearchOptions, GameQuery } from "../types"
+import { AuthRequest, Game, User, GameSearchOptions, GameQuery, Review } from "../types"
+import { filterBadWordsFromGame } from "../utils/utils"
 
 const gamesRouter = express.Router()
 
@@ -40,7 +42,33 @@ gamesRouter.post("/search/paginate", async (req, res: Response) => {
 			options.limit = parseInt(limit)
 		}
 
-		const games = await gameSchema.find(query, null, options).populate("creator", "name")
+		const games = await gameSchema.find(query, null, options).populate({
+			path: "creator",
+			select: "name"
+		}).populate({
+			path: "reviews",
+			populate: {
+				path: "creator",
+			}
+		})
+
+		for(const game of games) {
+			game.toJSON()
+		}
+
+		if(sortField === "reviews.rating") {
+			games.sort((a, b) =>  {
+				if(a.averageRating === null && b.averageRating === null) {
+					return 0
+				} else if(a.averageRating === null) {
+					return 1
+				}
+				else if(b.averageRating === null) {
+					return -1
+				}
+				return sortOrder === 1 ? a.averageRating - b.averageRating : b.averageRating - a.averageRating
+			})
+		}
 
 		const total = await gameSchema.countDocuments(query)
 
@@ -58,7 +86,8 @@ gamesRouter.post("/search/paginate", async (req, res: Response) => {
 
 gamesRouter.post("/", auth, async (req: AuthRequest, res: Response) => {
 	const user = req.user as User
-	const newGame = new gameSchema({ ...req.body, creator: req.user && req.user._id })
+	const game = filterBadWordsFromGame(req.body)
+	const newGame = new gameSchema({ ...game, creator: req.user && req.user._id })
 	try {
 		const savedGame = await newGame.save()
 		await userSchema.findByIdAndUpdate(user._id, { $push: { games: savedGame._id } })
@@ -70,13 +99,14 @@ gamesRouter.post("/", auth, async (req: AuthRequest, res: Response) => {
 
 gamesRouter.put("/:id", auth, async (req: AuthRequest, res: Response) => {
 	const user = req.user as User
+	const filteredGame = filterBadWordsFromGame(req.body)
 	try {
 		const game: Game | null = await gameSchema.findById(req.params.id)
 		if (!game) {
 			return res.status(404).json({ error: "Game not found!" })
 		}
 		if (user._id.equals(game.creator)) {
-			await game.updateOne({ ...req.body, updatedAt: new Date() })
+			await game.updateOne({ ...filteredGame, updatedAt: new Date() })
 			res.status(200).json({ message: "Game updated successfully!" })
 		} else {
 			res.status(403).json({ error: "You can only update your own games!" })
@@ -111,10 +141,30 @@ gamesRouter.put("/:id/view", auth, async (req: AuthRequest, res: Response) => {
 		if (!game) {
 			return res.status(404).json({ error: "Game not found!" })
 		}
-		if(!game.viewedBy.includes(user._id)) {
+		if (!game.viewedBy.includes(user._id)) {
 			await game.updateOne({ $push: { viewedBy: user._id } })
 		}
 		res.status(200).json({ message: "Game viewed successfully!" })
+	} catch (err) {
+		res.status(500).json(err)
+	}
+})
+
+gamesRouter.post("/:id/review", auth, async (req: AuthRequest, res: Response) => {
+	const user = req.user as User
+	try {
+		const game: Game | null = await gameSchema.findById(req.params.id).populate("reviews")
+		if (!game) {
+			return res.status(404).json({ error: "Game not found!" })
+		}
+		const reviews = game.reviews as Review[]
+		if (!reviews.find((review: Review) => review.creator.equals(user._id))) {
+			const review = new reviewSchema({ ...req.body, game: game._id, creator: user._id })
+			await review.save()
+			await game.updateOne({ $push: { reviews: review._id } })
+		}
+		const newReview = await reviewSchema.findOne({ creator: user._id, game: game._id }).populate("creator")
+		res.status(200).json(newReview)
 	} catch (err) {
 		res.status(500).json(err)
 	}
