@@ -1,5 +1,5 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
-require("dotenv").config({ path: __dirname+"/.env" })
+require("dotenv").config({ path: __dirname + "/.env" })
 import express from "express"
 import mongoose from "mongoose"
 import cors from "cors" // dev
@@ -9,7 +9,6 @@ import usersRouter from "./controllers/Users"
 import testingRouter from "./controllers/Testing"
 import { ExpressJsonOptions } from "./types"
 import rateLimiter from "./utils/RateLimiter"
-
 const app = express()
 const PORT =  process.env.PORT || 8080
 
@@ -17,7 +16,7 @@ app.use(express.json({ limit: "30mb", extended: true } as ExpressJsonOptions))
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cors()) // dev
 
-app.use(express.static(path.join(__dirname, "..", "build"))) // prod
+app.use(express.static(path.join(__dirname, "..", "client", "build"))) // prod
 
 app.use(rateLimiter)
 
@@ -29,9 +28,9 @@ if (process.env.NODE_ENV === "test") {
 }
 
 // prod
-// app.get("*", (_req, res) => {
-// 	res.sendFile(path.join(__dirname, "..", "build", "index.html"))
-// })
+app.get("*", (_req, res) => {
+	res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"))
+})
 
 app.get("/health", (_req, res) => {
 	res.send("ok")

@@ -24,10 +24,7 @@
             "error",
             "tab"
         ],
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
+        "linebreak-style": 0,
         "quotes": [
             "error",
             "double"
@@ -43,5 +40,5 @@
             "error", { "before": true, "after": true }
         ]
     },
-    "ignorePatterns": ["dist/", "node_modules/"]
+    "ignorePatterns": ["dist/", "node_modules/", "client/"]
 }
