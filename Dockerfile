@@ -21,7 +21,7 @@ ENV NODE_ENV production
 
 COPY . .
 
-# RUN cd /client && npm install && npm run build
+RUN cd client && npm install && npm run build
 RUN npm install --production=false && npm run build
 FROM debian:bullseye
 
