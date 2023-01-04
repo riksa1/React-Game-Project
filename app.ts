@@ -16,7 +16,7 @@ app.use(express.json({ limit: "30mb", extended: true } as ExpressJsonOptions))
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 app.use(cors()) // dev
 
-app.use(express.static(path.join(__dirname, "client", "build"))) // prod
+app.use(express.static(path.join(__dirname, "..", "client", "build"))) // prod
 
 app.use(rateLimiter)
 
@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === "test") {
 
 // prod
 app.get("*", (_req, res) => {
-	res.sendFile(path.join(__dirname, "client", "build", "index.html"))
+	res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"))
 })
 
 app.get("/health", (_req, res) => {
