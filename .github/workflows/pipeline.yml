@@ -28,8 +28,8 @@ jobs:
       - name: build
         run: |
           cd client && npm run build && cd .. && npm run build
+      - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: "Deploy to Fly"
-        uses: superfly/flyctl-actions/setup-flyctl@master
         run: flyctl deploy --remote-only
   # deploy:
   #   needs: [build]
