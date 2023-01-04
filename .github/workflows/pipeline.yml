@@ -29,8 +29,8 @@ jobs:
         run: |
           cd client && npm run build && cd .. && npm run build
       - name: "Deploy to Fly"
-        - uses: superfly/flyctl-actions/setup-flyctl@master
-        - run: flyctl deploy --remote-only
+        uses: superfly/flyctl-actions/setup-flyctl@master
+        run: flyctl deploy --remote-only
   # deploy:
   #   needs: [build]
   #   # if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
