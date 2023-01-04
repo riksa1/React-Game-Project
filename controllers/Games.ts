@@ -125,6 +125,8 @@ gamesRouter.delete("/:id", auth, async (req: AuthRequest, res: Response) => {
 		}
 		if (user._id.equals(game.creator)) {
 			await game.delete()
+			await userSchema.findByIdAndUpdate(user._id, { $pull: { games: game._id } })
+			await reviewSchema.deleteMany({ game: game._id })
 			res.status(200).json({ message: "Game deleted successfully!" })
 		} else {
 			res.status(403).json({ error: "You can only delete your own games!" })

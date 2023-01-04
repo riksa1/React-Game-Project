@@ -73,6 +73,7 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 						}}
 						validationSchema={NewGameSchema}
 						onSubmit={({ title, description, developer, releaseDate }) => {
+							console.log("This triggered")
 							if (editing && selectedGame)
 								dispatch(updateGameAsync(selectedGame._id, { title, description, tags, image, developer, releaseDate }, navigate))
 							else

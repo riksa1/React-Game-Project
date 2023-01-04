@@ -37,6 +37,9 @@ export const gamesSlice = createSlice({
 		},
 		removeGame: (state, action: PayloadAction<string>) => {
 			state.games = state.games.filter(game => game._id !== action.payload)
+			state.ownLatestGames = state.ownLatestGames.filter(game => game._id !== action.payload)
+			state.latestGames = state.latestGames.filter(game => game._id !== action.payload)
+			state.selectedGame = null
 		},
 		setSelectedGame: (state, action: PayloadAction<Game | null>) => {
 			state.selectedGame = action.payload
@@ -135,10 +138,15 @@ export const updateGameAsync = (id: string, game: NewGame, navigate: (path: stri
 	}
 }
 
-export const deleteGameAsync = (id: string): AppThunk => async dispatch => {
+export const deleteGameAsync = (id: string): AppThunk => async (dispatch, getState) => {
+	const { games, auth } = getState()
 	try {
 		await deleteGame(id)
 		dispatch(removeGame(id))
+		if(auth.user && games.ownLatestGames.find(game => game._id === id)) {
+			const { data } = await searchGames({ search: "", page: 1, limit: 3, sort: "createdAt -1", userId: auth.user._id })
+			dispatch(setLatestOwnGames(data.docs))
+		}
 		toast.success("Game deleted successfully!")
 	} catch (error) {
 		if(error instanceof AxiosError && error?.response?.data?.error) {

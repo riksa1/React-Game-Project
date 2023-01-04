@@ -28,14 +28,27 @@ jobs:
       - name: build
         run: |
           cd client && npm run build && cd .. && npm run build
-      # - uses: superfly/flyctl-actions/setup-flyctl@master
-      # - name: "Deploy to Fly"
-      #   run: flyctl deploy --remote-only
+
   deploy:
     needs: [build]
-    # if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
-    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
+
+  tag_release:
+    needs: [deploy]
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@eca2b69f9e2c24be7decccd0f15fdb1ea5906598
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: main

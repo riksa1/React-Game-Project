@@ -10,7 +10,8 @@ const TagInput = ({ tags, setTags }: TagInputProps) => {
 	const [inputValue, setInputValue] = useState<string>("")
 
 	const handleKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
-		if (event.key === "Enter") {
+		if (event.key === "Enter" && inputValue !== "") {
+			event.preventDefault()
 			setTags([...tags, inputValue])
 			setInputValue("")
 		}
