@@ -35,7 +35,7 @@ jobs:
           install: false
           component: true
           working-directory: ./client
-          start: npm run start:test
+          start: cd .. && npm run start:test
           wait-on: http://localhost:8080
         env:
           MONGODB_URL: ${{ secrets.MONGODB_URL }}
