@@ -47,8 +47,7 @@ jobs:
         uses: cypress-io/github-action@v3
         with:
           install: false
-          project: ./client
-          start: npm run start:test
+          working-directory: ./client
           wait-on: http://localhost:8080
 
   deploy:
