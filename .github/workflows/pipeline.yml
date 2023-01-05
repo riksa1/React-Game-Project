@@ -34,14 +34,14 @@ jobs:
         with:
           install: false
           component: true
-          project: ./client
+          working-directory: ./client
           start: npm run start:test
           wait-on: http://localhost:8080
         env:
           MONGODB_URL: ${{ secrets.MONGODB_URL }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
       - name: e2e tests
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v3
         with:
           install: false
           project: ./client
