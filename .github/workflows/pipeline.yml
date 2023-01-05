@@ -41,11 +41,12 @@ jobs:
           working-directory: ./client
           wait-on: http://localhost:8080
       - name: e2e tests
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v5
         with:
           install: false
           working-directory: ./client
           wait-on: http://localhost:8080
+          headed: true
 
   deploy:
     needs: [build]
