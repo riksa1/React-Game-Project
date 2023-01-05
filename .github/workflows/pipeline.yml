@@ -52,8 +52,7 @@ jobs:
         if: failure()
         with:
           name: cypress-videos
-          path: client/cypress/videos # path to the folder with videos
-
+          path: client/cypress/videos # path to the folder with videos to upload
   deploy:
     needs: [build]
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
