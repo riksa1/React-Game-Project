@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "load-sample-data": "ts-node sampleData.ts",
     "build": "tsc -p .",
-    "cy:run": "cross-env NODE_ENV=test cypress run",
+    "cy:run": "cross-env NODE_ENV=test cd client && npm run cy:run",
+    "cy:run:component": "cross-env NODE_ENV=test cd client && npm run cy:run:component"
   },
   "keywords": [],
   "author": "",
