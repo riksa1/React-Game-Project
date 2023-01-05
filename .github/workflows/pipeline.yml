@@ -47,7 +47,8 @@ jobs:
           install: false
           working-directory: ./client
           wait-on: http://localhost:8080
-          headed: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     needs: [build]
