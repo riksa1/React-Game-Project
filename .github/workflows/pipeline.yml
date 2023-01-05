@@ -32,7 +32,7 @@ jobs:
       - name: component tests
         uses: cypress-io/github-action@v3
         with:
-          command: cd client && npm run cy:run:component
+          project: ./client
           start: npm run start:test
           wait-on: http://localhost:8080
         env:
