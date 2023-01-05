@@ -29,7 +29,7 @@ jobs:
       - name: build
         run: |
           cd client && npm run build && cd .. && npm run build
-      - name component tests
+      - name: component tests
         uses: cypress-io/github-action@v2
         with:
           command: npm run cy:run:component
