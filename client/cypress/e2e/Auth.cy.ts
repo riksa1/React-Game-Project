@@ -1,14 +1,14 @@
 describe("Authenticating", () => {
 	beforeEach(() => {
-		cy.request("POST", "http://localhost:3001/api/testing/reset")
+		cy.request("POST", "http://localhost:8080/api/testing/reset")
 		const user = {
 			name: "Jeff Bezos",
 			email: "jeff.bezos@gmail.com",
 			password: "123456789",
 			confirmPassword: "123456789"
 		}
-		cy.request("POST", "http://localhost:3001/api/users/register", user)
-		cy.visit("http://localhost:3000")
+		cy.request("POST", "http://localhost:8080/api/users/register", user)
+		cy.visit("http://localhost:8080")
 	})
 
 	it("Should register a new user and login", () => {

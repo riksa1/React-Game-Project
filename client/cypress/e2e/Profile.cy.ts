@@ -1,14 +1,14 @@
 describe("Profile", () => {
 	beforeEach(() => {
-		cy.request("POST", "http://localhost:3001/api/testing/reset")
+		cy.request("POST", "http://localhost:8080/api/testing/reset")
 		const user = {
 			name: "Jeff Bezos",
 			email: "jeff.bezos@gmail.com",
 			password: "123456789",
 			confirmPassword: "123456789"
 		}
-		cy.request("POST", "http://localhost:3001/api/users/register", user)
-		cy.visit("http://localhost:3000")
+		cy.request("POST", "http://localhost:8080/api/users/register", user)
+		cy.visit("http://localhost:8080")
 	})
 
 	describe("Modify Profile", () => {
@@ -36,6 +36,7 @@ describe("Profile", () => {
 			cy.get("input[name='newPassword']").type("1234567890")
 			cy.get("input[name='confirmPassword']").type("1234567890")
 			cy.get("form").submit()
+			cy.wait(1000)
 			cy.contains("Jeff Bezos")
 			cy.contains("Logout").click()
 			cy.contains("Login").click()

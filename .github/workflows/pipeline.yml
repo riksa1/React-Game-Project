@@ -10,10 +10,13 @@ on:
 
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  MONGODB_URL: ${{ secrets.MONGODB_URL }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
 jobs:
+
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -28,11 +31,33 @@ jobs:
       - name: build
         run: |
           cd client && npm run build && cd .. && npm run build
+      - name: Start server in background
+        run: npm run start:test &
+      - name: component tests
+        uses: cypress-io/github-action@v5
+        with:
+          install: false
+          component: true
+          working-directory: ./client
+          wait-on: http://localhost:8080
+      - name: e2e tests
+        uses: cypress-io/github-action@v5
+        with:
+          browser: chrome
+          install: false
+          working-directory: ./client
+          wait-on: http://localhost:8080
+      - name: Upload videos
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-videos
+          path: client/cypress/videos # path to the folder with videos
 
   deploy:
     needs: [build]
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
@@ -41,13 +66,14 @@ jobs:
   tag_release:
     needs: [deploy]
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
+          ref: ${{ github.sha }}
           fetch-depth: '0'
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@eca2b69f9e2c24be7decccd0f15fdb1ea5906598
+        uses: anothrNick/github-tag-action@v1 # eca2b69f9e2c24be7decccd0f15fdb1ea5906598 before
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
