@@ -58,6 +58,7 @@ gamesRouter.post("/search/paginate", async (req, res: Response) => {
 
 		if(sortField === "reviews.rating") {
 			games.sort((a, b) =>  {
+				// Null check
 				if(a.averageRating === null && b.averageRating === null) {
 					return 0
 				} else if(a.averageRating === null) {
@@ -66,6 +67,7 @@ gamesRouter.post("/search/paginate", async (req, res: Response) => {
 				else if(b.averageRating === null) {
 					return -1
 				}
+				// Sort
 				return sortOrder === 1 ? a.averageRating - b.averageRating : b.averageRating - a.averageRating
 			})
 		}

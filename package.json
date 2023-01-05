@@ -10,7 +10,8 @@
     "dev:test": "cross-env NODE_ENV=test nodemon app.ts",
     "lint": "eslint .",
     "load-sample-data": "ts-node sampleData.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "cy:run": "cross-env NODE_ENV=test cypress run",
   },
   "keywords": [],
   "author": "",
