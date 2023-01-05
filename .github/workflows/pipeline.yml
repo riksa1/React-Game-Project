@@ -47,6 +47,7 @@ jobs:
           install: false
           working-directory: ./client
           wait-on: http://localhost:8080
+          headed: true
 
   deploy:
     needs: [build]
