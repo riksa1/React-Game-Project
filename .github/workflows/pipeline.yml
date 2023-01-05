@@ -30,9 +30,9 @@ jobs:
         run: |
           cd client && npm run build && cd .. && npm run build
       - name: component tests
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v5
         with:
-          project: ./client
+          working-directory: client
           start: npm run start:test
           wait-on: http://localhost:8080
         env:
