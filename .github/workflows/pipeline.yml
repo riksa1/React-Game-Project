@@ -43,10 +43,10 @@ jobs:
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with:
+          browser: chrome
           install: false
           working-directory: ./client
           wait-on: http://localhost:8080
-          headed: true
 
   deploy:
     needs: [build]
