@@ -47,7 +47,7 @@ jobs:
           install: false
           working-directory: ./client
           wait-on: http://localhost:8080
-      - name: Upload videos
+      - name: Upload videos on failure
         uses: actions/upload-artifact@v3
         if: failure()
         with:
@@ -73,7 +73,7 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: '0'
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@v1 # eca2b69f9e2c24be7decccd0f15fdb1ea5906598 before
+        uses: anothrNick/github-tag-action@v1 # eca2b69f9e2c24be7decccd0f15fdb1ea5906598
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
