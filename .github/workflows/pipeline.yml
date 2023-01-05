@@ -30,13 +30,16 @@ jobs:
         run: |
           cd client && npm run build && cd .. && npm run build
       - name: component tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v3
         with:
           command: npm run cy:run:component
           start: npm run start:test
           wait-on: http://localhost:8080
+          env:
+            MONGODB_URL: ${{ secrets.MONGODB_URL }}
+            JWT_SECRET: ${{ secrets.JWT_SECRET }}
       - name: e2e tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v3
         with:
           command: npm run cy:run
           start: npm run start:test
