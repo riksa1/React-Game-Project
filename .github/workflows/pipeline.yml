@@ -32,7 +32,8 @@ jobs:
       - name: component tests
         uses: cypress-io/github-action@v5
         with:
-          commmand: npm run cy:run:component
+          install: false
+          component: true
           start: npm run start:test
           wait-on: http://localhost:8080
         env:
