@@ -47,8 +47,12 @@ jobs:
           install: false
           working-directory: ./client
           wait-on: http://localhost:8080
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload videos
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-videos
+          path: client/cypress/videos # path to the folder with videos
 
   deploy:
     needs: [build]
