@@ -34,14 +34,16 @@ jobs:
         with:
           install: false
           component: true
+          command: cd client && npm run cy:run:component
           start: npm run start:test
           wait-on: http://localhost:8080
         env:
           MONGODB_URL: ${{ secrets.MONGODB_URL }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
       - name: e2e tests
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v5
         with:
+          install: false
           project: ./client
           start: npm run start:test
           wait-on: http://localhost:8080
