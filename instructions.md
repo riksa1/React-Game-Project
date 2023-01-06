@@ -18,7 +18,7 @@
 ## Styling
 * You can switch the style of the website from "light mode" to "dark mode" (and vice versa) by pressing the switch on the top navbar
 
-## Login, Logout and register user
+## Login, logout and register user
 * Press the "login" button found in the top right corner (if you have a small screen you need to open the drawer by pressing the top right button first)
 * Login page will be opened from where you can login to the application if you have an account)
 * To create an account you can press the blue text "Sign Up" on the bottom of the login form and then a registeration form will be opened where you can create a new account with values "Name", "Email" and "Password"
