@@ -31,29 +31,28 @@ jobs:
       - name: build
         run: |
           cd client && npm run build && cd .. && npm run build
-      - name: Start server in background
-        run: npm run start:test &
+      - name: Start dev server in background
+        run: npm run dev:test &
+      - name: Start client dev server in background
+        run: cd client && npm start &
       - name: component tests
         uses: cypress-io/github-action@v5
         with:
           install: false
           component: true
           working-directory: ./client
-          wait-on: http://localhost:8080
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
           install: false
           working-directory: ./client
-          wait-on: http://localhost:8080
-      - name: Upload videos
+      - name: Upload videos on failure
         uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: cypress-videos
-          path: client/cypress/videos # path to the folder with videos
-
+          path: client/cypress/videos # path to the folder with videos to upload
   deploy:
     needs: [build]
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
@@ -73,7 +72,7 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: '0'
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@v1 # eca2b69f9e2c24be7decccd0f15fdb1ea5906598 before
+        uses: anothrNick/github-tag-action@v1 # eca2b69f9e2c24be7decccd0f15fdb1ea5906598
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
