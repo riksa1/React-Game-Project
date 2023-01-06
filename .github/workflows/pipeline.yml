@@ -31,22 +31,22 @@ jobs:
       - name: build
         run: |
           cd client && npm run build && cd .. && npm run build
-      - name: Start server in background
-        run: npm run start:test &
+      - name: Start dev server in background
+        run: npm run dev:test &
+      - name: Start client dev server in background
+        run: cd client && npm start &
       - name: component tests
         uses: cypress-io/github-action@v5
         with:
           install: false
           component: true
           working-directory: ./client
-          wait-on: http://localhost:8080
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
           install: false
           working-directory: ./client
-          wait-on: http://localhost:8080
       - name: Upload videos on failure
         uses: actions/upload-artifact@v3
         if: failure()

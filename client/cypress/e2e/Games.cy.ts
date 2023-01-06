@@ -8,7 +8,7 @@ describe("Games", () => {
 			confirmPassword: "123456789"
 		}
 		cy.request("POST", "http://localhost:8080/api/users/register", user)
-		cy.visit("http://localhost:8080")
+		cy.visit("http://localhost:3000")
 		cy.contains("Login").click()
 		cy.get("input[name='email']").type("jeff.bezos@gmail.com")
 		cy.get("input[name='password']").type("123456789")

@@ -8,7 +8,7 @@ describe("Profile", () => {
 			confirmPassword: "123456789"
 		}
 		cy.request("POST", "http://localhost:8080/api/users/register", user)
-		cy.visit("http://localhost:8080")
+		cy.visit("http://localhost:3000")
 	})
 
 	describe("Modify Profile", () => {
