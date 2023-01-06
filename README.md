@@ -5,4 +5,4 @@ Link to the website running in fly.io: [https://gamelibrayapp1.fly.dev/](https:/
 
 Link to the instructions: 
 
-Link to the work hours: 
+Link to the work hours: [https://github.com/riksa1/React-Game-Project/blob/main/workhours.md](https://github.com/riksa1/React-Game-Project/blob/main/workhours.md)
