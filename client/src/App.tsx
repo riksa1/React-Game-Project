@@ -4,7 +4,8 @@ import Home from "./views/Home"
 import Profile from "./views/Profile"
 import Games from "./views/Games"
 import Game from "./views/Game"
-import GameForm from "./views/GameForm"
+import EditGameForm from "./views/EditGameForm"
+import CreateGameForm from "./views/CreateGameForm"
 import ProfileForm from "./views/ProfileForm"
 import ChangePasswordForm from "./views/ChangePasswordForm"
 import { Toaster } from "react-hot-toast"
@@ -41,8 +42,8 @@ const App = () => {
 					{isAuth ? (
 						<>
 							<Route path="/profile" element={<Profile />} />
-							<Route path="/newgame" element={<GameForm />} />
-							<Route path="/editgame" element={<GameForm editing />} />
+							<Route path="/newgame" element={<CreateGameForm />} />
+							<Route path="/editgame" element={<EditGameForm />} />
 							<Route path="/editprofile" element={<ProfileForm />} />
 							<Route path="/changepassword" element={<ChangePasswordForm />} />
 						</>

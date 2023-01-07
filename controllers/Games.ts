@@ -145,7 +145,7 @@ gamesRouter.put("/:id/view", auth, async (req: AuthRequest, res: Response) => {
 		if (!game) {
 			return res.status(404).json({ error: "Game not found!" })
 		}
-		if (!game.viewedBy.includes(user._id)) {
+		if (!game.viewedBy.includes(user._id) && !user._id.equals(game.creator)) {
 			await game.updateOne({ $push: { viewedBy: user._id } })
 		}
 		res.status(200).json({ message: "Game viewed successfully!" })

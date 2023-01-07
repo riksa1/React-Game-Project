@@ -56,5 +56,26 @@ describe("Games", () => {
 			cy.contains("Game deleted successfully!")
 			cy.contains("The Witcher 3").should("not.exist")
 		})
+
+		it("Should add a review", () => {
+			cy.contains("Logout").click()
+			const user = {
+				name: "Steve Jobs",
+				email: "steve.jobs@gmail.com",
+				password: "123456789",
+				confirmPassword: "123456789"
+			}
+			cy.request("POST", "http://localhost:8080/api/users/register", user)
+			cy.contains("Login").click()
+			cy.get("input[name='email']").type("steve.jobs@gmail.com")
+			cy.get("input[name='password']").type("123456789")
+			cy.get("form").submit()
+			cy.contains("View").click()
+			cy.get("textarea[name='description']").type("This is a great game!")
+			cy.get("input[value=5]").click({ force: true })
+			cy.get("form").submit()
+			cy.contains("Review created successfully!")
+			cy.contains("Steve Jobs")
+		})
 	})
 })

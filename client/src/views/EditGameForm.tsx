@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Box, Toolbar, Typography, Button, TextField } from "@mui/material"
 import DrawerComponent from "../components/Drawer"
 import { Formik, Form } from "formik"
-import { createGameAsync, updateGameAsync } from "../reducers/Games"
+import { updateGameAsync } from "../reducers/Games"
 import { useNavigate } from "react-router-dom"
 import * as Yup from "yup"
 import { useAppDispatch, useAppSelector } from "hooks"
@@ -11,11 +11,7 @@ import toast from "react-hot-toast"
 import { Image } from "types"
 import TagInput from "components/TagInput"
 
-interface GameFormProps {
-	editing?: boolean
-}
-
-const NewGameSchema = Yup.object().shape({
+const EditGameSchema = Yup.object().shape({
 	title: Yup.string()
 		.min(3, "Title is too short!")
 		.max(100, "Title is too long!")
@@ -32,25 +28,27 @@ const NewGameSchema = Yup.object().shape({
 		.required("Release date is required!"),
 })
 
-const GameForm = ({ editing = false }: GameFormProps) => {
+const EditGameForm = () => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const { selectedGame } = useAppSelector(state => state.games)
 	const { user } = useAppSelector(state => state.auth)
-	const [tags, setTags] = useState<string[]>(editing && selectedGame ? selectedGame.tags : [])
-	const [image, setImage] = useState<Image | null>(editing && selectedGame ? selectedGame.image : null)
+	const [tags, setTags] = useState<string[]>(selectedGame ? selectedGame.tags : [])
+	const [image, setImage] = useState<Image | null>(selectedGame ? selectedGame.image : null)
 
 	useEffect(() => {
-		if(editing && selectedGame && selectedGame?.creator?._id !== user?._id) {
+		if(selectedGame && selectedGame?.creator?._id !== user?._id) {
 			toast.error("You are not the creator of this game!")
 			navigate("/games")
+		} else if(!selectedGame) {
+			navigate("/games")
 		}
-	}, [editing, selectedGame, user, navigate])
+	}, [selectedGame, user, navigate])
 
 	return (
 		<>
 			<DrawerComponent />
-			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm:  `calc(100% + ${240}px)` }  }}>
+			<Box component="main" sx={{ display: "flex", flexGrow: 1, p: 3, flexDirection: "column", alignItems: "center", mt: 5, width: { sm: `calc(100% - ${240}px)` }, ml: { sm: "240px" } }}>
 				<Toolbar />
 				<Box sx={{
 					display: "flex",
@@ -62,21 +60,20 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 					mr: 2,
 				}}>
 					<Typography variant="h3" component="h3" sx={{ mb: 4 }}>
-						{editing && selectedGame ? "Edit Game" : "Add Game"}
+						Edit Game
 					</Typography>
 					<Formik
 						initialValues={{
-							title: editing && selectedGame ? selectedGame.title : "",
-							description: editing && selectedGame ? selectedGame.description : "",
-							developer: editing && selectedGame ? selectedGame.developer : "",
-							releaseDate: editing && selectedGame ? selectedGame.releaseDate : "",
+							title: selectedGame ? selectedGame.title : "",
+							description: selectedGame ? selectedGame.description : "",
+							developer: selectedGame ? selectedGame.developer : "",
+							releaseDate: selectedGame ? selectedGame.releaseDate.split("T")[0] : "",
 						}}
-						validationSchema={NewGameSchema}
+						validationSchema={EditGameSchema}
 						onSubmit={({ title, description, developer, releaseDate }) => {
-							if (editing && selectedGame)
+							if(selectedGame) {
 								dispatch(updateGameAsync(selectedGame._id, { title, description, tags, image, developer, releaseDate }, navigate))
-							else
-								createGameAsync({ title, description, tags, image, developer, releaseDate }, navigate)
+							}
 						}}
 					>
 						{formik => (
@@ -145,7 +142,7 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 										style={{ maxHeight: 400, maxWidth: 400, objectFit: "cover", marginBottom: 20 }}
 									/>}
 								</Box>
-								<Button sx={{ width: "100%", height: 55 }} variant="contained" type="submit">{editing && selectedGame ? "Edit" : "Create"}</Button>
+								<Button sx={{ width: "100%", height: 55 }} variant="contained" type="submit">Edit</Button>
 							</Form>
 						)}
 					</Formik>
@@ -155,4 +152,4 @@ const GameForm = ({ editing = false }: GameFormProps) => {
 	)
 }
 
-export default GameForm
+export default EditGameForm
