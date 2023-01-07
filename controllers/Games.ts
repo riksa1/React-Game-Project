@@ -138,22 +138,6 @@ gamesRouter.delete("/:id", auth, async (req: AuthRequest, res: Response) => {
 	}
 })
 
-gamesRouter.put("/:id/view", auth, async (req: AuthRequest, res: Response) => {
-	const user = req.user as User
-	try {
-		const game: Game | null = await gameSchema.findById(req.params.id)
-		if (!game) {
-			return res.status(404).json({ error: "Game not found!" })
-		}
-		if (!game.viewedBy.includes(user._id) && !user._id.equals(game.creator)) {
-			await game.updateOne({ $push: { viewedBy: user._id } })
-		}
-		res.status(200).json({ message: "Game viewed successfully!" })
-	} catch (err) {
-		res.status(500).json(err)
-	}
-})
-
 gamesRouter.post("/:id/review", auth, async (req: AuthRequest, res: Response) => {
 	const user = req.user as User
 	try {
@@ -169,6 +153,22 @@ gamesRouter.post("/:id/review", auth, async (req: AuthRequest, res: Response) =>
 		}
 		const newReview = await reviewSchema.findOne({ creator: user._id, game: game._id }).populate("creator")
 		res.status(200).json(newReview)
+	} catch (err) {
+		res.status(500).json(err)
+	}
+})
+
+gamesRouter.put("/:id/view", auth, async (req: AuthRequest, res: Response) => {
+	const user = req.user as User
+	try {
+		const game: Game | null = await gameSchema.findById(req.params.id)
+		if (!game) {
+			return res.status(404).json({ error: "Game not found!" })
+		}
+		if (!game.viewedBy.includes(user._id) && !user._id.equals(game.creator)) {
+			await game.updateOne({ $push: { viewedBy: user._id } })
+		}
+		res.status(200).json({ message: "Game viewed successfully!" })
 	} catch (err) {
 		res.status(500).json(err)
 	}
