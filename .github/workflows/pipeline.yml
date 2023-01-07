@@ -5,8 +5,8 @@ on:
     branches:
       - main
   pull_request:
-    branches: [ main ]
-    types: [ opened, synchronize ]
+    branches: [main]
+    types: [opened, synchronize]
 
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
@@ -53,6 +53,7 @@ jobs:
         with:
           name: cypress-videos
           path: client/cypress/videos # path to the folder with videos to upload
+
   deploy:
     needs: [build]
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}

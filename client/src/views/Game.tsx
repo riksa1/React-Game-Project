@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "react-hot-toast"
 import { Review } from "types"
 import ReviewForm from "components/ReviewForm"
+import { format } from "date-fns"
 
 const Game = () => {
 	const navigate = useNavigate()
@@ -43,6 +44,7 @@ const Game = () => {
 							"https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
 						}
 						alt="Game image"
+						sx={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%", mb: 2 }}
 					/>
 					<CardContent sx={{ width: "100%" }}>
 						<Typography variant="h3" component="h3" sx={{ mb: 4, mt: 2, textAlign: "center" }}>
@@ -51,6 +53,33 @@ const Game = () => {
 						<Typography variant="h5" component="h5" sx={{ mb: 4, textAlign: "center" }}>
 							{selectedGame ? selectedGame.description : "Description"}
 						</Typography>
+						<Typography variant="h5" component="h5" sx={{ mb: 4, textAlign: "center" }}>
+							{selectedGame ? `Developer: ${selectedGame.developer}` : "Developer"}
+						</Typography>
+						<Typography variant="h5" component="h5" sx={{ mb: 4, textAlign: "center" }}>
+							{selectedGame ? `Release Date: ${format(new Date(selectedGame.releaseDate), "dd/MM/yyyy")}` : "Release Date"}
+						</Typography>
+						{selectedGame?.reviews && selectedGame?.reviews.length > 0 && (
+							<Box
+								sx={{
+									display: "flex",
+									flexDirection: "column",
+									justifyContent: "center",
+									alignItems: "center",
+									flexWrap: "wrap",
+								}}
+							>
+								<Typography variant="h5" component="h5" sx={{ mb: 2, textAlign: "center" }}>
+									Rating
+								</Typography>
+								<Rating
+									name="game-rating"
+									value={selectedGame ? selectedGame.averageRating : 0}
+									readOnly
+									sx={{ mb: 4, textAlign: "center" }}
+								/>
+							</Box>
+						)}
 						{selectedGame?.tags && selectedGame?.tags.length > 0 && (
 							<Box
 								sx={{
@@ -138,7 +167,7 @@ const Game = () => {
 													)}
 													<Box sx={{ textAlign: "center" }}>
 														<Rating
-															name="game-rating"
+															name="user-game-rating"
 															value={review.rating}
 															readOnly
 															precision={0.5}

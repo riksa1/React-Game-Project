@@ -22,7 +22,7 @@ const NavBar = () => {
 						<Button color="inherit" onClick={() => navigate("/games")}>Games</Button>
 					</Typography>
 					<Typography variant="h6">
-						{theme === "dark" ? "Dark" : "Light"}
+						{theme === "dark" ? "Dark Mode" : "Light Mode"}
 					</Typography>
 					<Switch id="theme-switch" checked={theme === "dark"} onChange={handleThemeChange} />
 				</Toolbar>
