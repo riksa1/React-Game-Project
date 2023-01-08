@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - name: npm install
+      - name: Install dependencies
         run: |
           cd client && npm install && cd .. && npm install
       - name: lint
@@ -35,13 +35,13 @@ jobs:
         run: npm run dev:test &
       - name: Start client dev server in background
         run: cd client && npm start &
-      - name: component tests
+      - name: Component tests
         uses: cypress-io/github-action@v5
         with:
           install: false
           component: true
           working-directory: ./client
-      - name: e2e tests
+      - name: E2E tests
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
