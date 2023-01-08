@@ -24,14 +24,14 @@
 ![image](https://user-images.githubusercontent.com/59605589/211025608-acefef85-13c7-4699-adea-e7c4130b32bd.png)
 
 ## Login, logout and register user
-* Press the "login" button found in the top right corner (if you have a small screen you need to open the drawer by pressing the top right button first)
+* Press the "login" button found in the top left corner (if you have a small screen you need to open the drawer by pressing the top left button first)
 
 ![image](https://user-images.githubusercontent.com/59605589/211027860-6f64b2b1-0e74-46f0-ac22-48bf8014ac15.png)
 * Login page will be opened from where you can login to the application if you have an account)
 ![image](https://user-images.githubusercontent.com/59605589/211026177-760ec8bf-566a-4d84-b4e5-4ec801bb9c72.png)
 * To create an account you can press the blue text "Sign Up" on the bottom of the login form and then a registeration form will be opened where you can create a new account with values "Name", "Email" and "Password"
 ![image](https://user-images.githubusercontent.com/59605589/211026276-82900de6-6207-4813-aeaa-9ab7148a74aa.png)
-* After creating an account you will be returned to the home page logged in (you can see your name and avatar in the top right corner where the login button was)
+* After creating an account you will be returned to the home page logged in (you can see your name and avatar in the top left corner where the login button was)
 * If you want to logout you can press the "logout" button on the left drawer and then the "login" button will reappear and you can login by pressing it and inputting your "Email" and "Password" to the login form
 
 ![image](https://user-images.githubusercontent.com/59605589/211026891-b631a7d4-b7d7-43d0-9891-15ec767078bd.png)
